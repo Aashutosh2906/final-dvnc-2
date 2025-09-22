@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DVNC.AI - Da Vinci-Inspired Innovation System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-gold: #D4AF37;
+            --dark-bg: #0F0F0F;
+            --card-bg: #1A1A1A;
+            --text-primary: #FFFFFF;
+            --text-secondary: #B0B0B0;
+            --accent-blue: #4A90E2;
+            --success-green: #52C41A;
+            --border-color: #333333;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Renaissance-inspired background pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(212, 175, 55, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(74, 144, 226, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(212, 175, 55, 0.03) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .logo {
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .logo-text {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-gold), #FFD700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 0.05em;
+            position: relative;
+        }
+
+        .tagline {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            font-style: italic;
+            margin-top: 0.5rem;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .input-section, .output-section {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            animation: fadeIn 0.8s ease;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-gold);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-title::before {
+            content: '◈';
+            font-size: 1.2rem;
+        }
+
+        .prompt-grid {
+            display: grid;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .prompt-option {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .prompt-option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .prompt-option:hover {
+            background: rgba(212, 175, 55, 0.1);
+            border-color: var(--primary-gold);
+            transform: translateX(5px);
+        }
+
+        .prompt-option:hover::before {
+            left: 100%;
+        }
+
+        .prompt-option.selected {
+            background: rgba(212, 175, 55, 0.2);
+            border-color: var(--primary-gold);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .custom-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            color: var(--text-primary);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .custom-input:focus {
+            outline: none;
+            border-color: var(--primary-gold);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        }
+
+        .generate-btn {
+            width: 100%;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--primary-gold), #FFD700);
+            border: none;
+            border-radius: 8px;
+            color: var(--dark-bg);
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .generate-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
+        }
+
+        .generate-btn:active::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .generate-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(212, 175, 55, 0.3);
+            border-top-color: var(--primary-gold);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .result-container {
+            display: none;
+            animation: fadeIn 0.8s ease;
+        }
+
+        .result-container.active {
+            display: block;
+        }
+
+        .result-header {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(74, 144, 226, 0.1));
+            border: 1px solid var(--primary-gold);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .result-title {
+            font-size: 1.3rem;
+            color: var(--primary-gold);
+            margin-bottom: 0.5rem;
+        }
+
+        .result-meta {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .meta-label {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .meta-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .score-bar {
+            width: 100px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 0.25rem;
+        }
+
+        .score-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-gold), #FFD700);
+            transition: width 1s ease;
+        }
+
+        .features-list {
+            margin-top: 1.5rem;
+        }
+
+        .feature-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 3px solid var(--primary-gold);
+            border-radius: 4px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateX(5px);
+        }
+
+        .feature-description {
+            margin-bottom: 0.5rem;
+            line-height: 1.5;
+        }
+
+        .feature-meta {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        .stage-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .stage-concept {
+            background: rgba(74, 144, 226, 0.2);
+            color: var(--accent-blue);
+        }
+
+        .stage-prototype {
+            background: rgba(212, 175, 55, 0.2);
+            color: var(--primary-gold);
+        }
+
+        .stage-production {
+            background: rgba(82, 196, 26, 0.2);
+            color: var(--success-green);
+        }
+
+        .slm-outputs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .slm-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+        }
+
+        .slm-title {
+            color: var(--primary-gold);
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        .slm-insight {
+            font-size: 0.9rem;
+            line-height: 1.4;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .error-message {
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            color: #ff6b6b;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .error-message.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <div class="logo-text">DVNC.AI</div>
+            </div>
+            <div class="tagline">Da Vinci-Inspired Product Design System</div>
+            <p style="color: var(--text-secondary); margin-top: 1rem; max-width: 800px; margin-left: auto; margin-right: auto;">
+                Harnessing Renaissance polymathic genius through AI to transform abstract principles into tangible, market-ready innovations
+            </p>
+        </header>
+
+        <div class="main-content">
+            <div class="input-section">
+                <h2 class="section-title">Select Design Prompt</h2>
+                <div class="prompt-grid" id="promptGrid">
+                    <!-- Prompts will be populated here -->
+                </div>
+                <input type="text" class="custom-input" id="selectedPrompt" readonly placeholder="Selected prompt will appear here">
+                <button class="generate-btn" id="generateBtn">Generate Da Vinci-Inspired Design</button>
+                <div class="error-message" id="errorMessage"></div>
+            </div>
+
+            <div class="output-section">
+                <h2 class="section-title">Design Synthesis</h2>
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <p>Consulting da Vinci's knowledge verticals...</p>
+                    <p style="margin-top: 0.5rem; color: var(--text-secondary); font-size: 0.9rem;">
+                        Synthesizing mechanics, anatomy, and optics insights...
+                    </p>
+                </div>
+                <div class="result-container" id="resultContainer">
+                    <!-- Results will be populated here -->
+                </div>
+            </div>
+        </div>
+
+        <div class="slm-outputs" id="slmOutputs" style="display: none;">
+            <!-- SLM outputs will be shown here -->
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        const API_URL = '/api/generate'; // Update this with your backend URL when deployed
+        
+        const prompts = [
+            "a next-generation ergonomic computer mouse",
+            "an innovative kitchen kettle for urban living",
+            "a modular laptop docking station",
+            "a patient monitoring device for hospitals",
+            "a precision gardening tool system",
+            "a sustainable packaging solution for electronics",
+            "a smart home lighting system",
+            "an eco-friendly water bottle",
+            "a wearable fitness tracker",
+            "a compact urban bicycle"
+        ];
+
+        let selectedPrompt = '';
+
+        // Initialize UI
+        function initializeUI() {
+            const promptGrid = document.getElementById('promptGrid');
+            
+            prompts.forEach((prompt, index) => {
+                const promptOption = document.createElement('div');
+                promptOption.className = 'prompt-option';
+                promptOption.textContent = prompt;
+                promptOption.dataset.prompt = prompt;
+                promptOption.onclick = () => selectPrompt(prompt, promptOption);
+                promptGrid.appendChild(promptOption);
+            });
+        }
+
+        // Select prompt
+        function selectPrompt(prompt, element) {
+            // Clear previous selection
+            document.querySelectorAll('.prompt-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            // Set new selection
+            element.classList.add('selected');
+            selectedPrompt = prompt;
+            document.getElementById('selectedPrompt').value = prompt;
+            document.getElementById('errorMessage').classList.remove('active');
+        }
+
+        // Generate design
+        async function generateDesign() {
+            if (!selectedPrompt) {
+                showError('Please select a design prompt first');
+                return;
+            }
+
+            const generateBtn = document.getElementById('generateBtn');
+            const loading = document.getElementById('loading');
+            const resultContainer = document.getElementById('resultContainer');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            // Reset and show loading
+            generateBtn.disabled = true;
+            loading.classList.add('active');
+            resultContainer.classList.remove('active');
+            errorMessage.classList.remove('active');
+            document.getElementById('slmOutputs').style.display = 'none';
+
+            try {
+                // Simulate API call (replace with actual backend call)
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ prompt: selectedPrompt })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to generate design');
+                }
+
+                const data = await response.json();
+                displayResults(data);
+                
+            } catch (error) {
+                console.error('Error:', error);
+                // For demo purposes, generate mock data
+                generateMockResults();
+            } finally {
+                generateBtn.disabled = false;
+                loading.classList.remove('active');
+            }
+        }
+
+        // Generate mock results for demonstration
+        function generateMockResults() {
+            const mockData = {
+                name: `Vitruvian ${['Harmony', 'Flow', 'Aero', 'Sfumato'][Math.floor(Math.random() * 4)]} ${selectedPrompt.split(' ').slice(-1)[0]}`,
+                product_type: selectedPrompt,
+                target_market: ['Consumer Electronics', 'Industrial Equipment', 'Medical Devices', 'Sustainable Goods'][Math.floor(Math.random() * 4)],
+                innovation_score: Math.floor(Math.random() * 3) + 7,
+                feasibility_score: Math.floor(Math.random() * 3) + 7,
+                viability_score: (Math.random() * 0.3 + 0.7).toFixed(2),
+                features: [
+                    {
+                        description: "Apply pyramidal law of force for enhanced mechanical efficiency",
+                        inspiration: "Madrid I, 16r - Studies of spring mechanics",
+                        stage: "PROTOTYPE",
+                        notes: "Prototype feasible with current technology"
+                    },
+                    {
+                        description: "Incorporate proportional harmony for biomimetic ergonomics",
+                        inspiration: "Venice Accademia - Proportional Study",
+                        stage: "PRODUCTION_READY",
+                        notes: "Production-ready using established processes"
+                    },
+                    {
+                        description: "Integrate sfumato technique for visual harmony",
+                        inspiration: "Treatise on Painting - Shadow studies",
+                        stage: "CONCEPT",
+                        notes: "Conceptual exploration required"
+                    }
+                ],
+                slm_outputs: {
+                    mechanics: [
+                        "Pyramidal force distribution for structural integrity",
+                        "Worm gear mechanisms for compact power transmission"
+                    ],
+                    anatomy: [
+                        "Vitruvian proportions for optimal ergonomics",
+                        "Layered system integration mimicking muscle structures"
+                    ],
+                    optics: [
+                        "Sfumato gradients for perceptual depth",
+                        "Golden ratio implementation for aesthetic harmony"
+                    ]
+                }
+            };
+            
+            displayResults(mockData);
+        }
+
+        // Display results
+        function displayResults(data) {
+            const resultContainer = document.getElementById('resultContainer');
+            const slmOutputs = document.getElementById('slmOutputs');
+            
+            // Build result HTML
+            resultContainer.innerHTML = `
+                <div class="result-header">
+                    <div class="result-title">${data.name}</div>
+                    <div class="result-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">Market</span>
+                            <span class="meta-value">${data.target_market}</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Innovation</span>
+                            <span class="meta-value">${data.innovation_score}/10</span>
+                            <div class="score-bar">
+                                <div class="score-fill" style="width: ${data.innovation_score * 10}%"></div>
+                            </div>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Feasibility</span>
+                            <span class="meta-value">${data.feasibility_score}/10</span>
+                            <div class="score-bar">
+                                <div class="score-fill" style="width: ${data.feasibility_score * 10}%"></div>
+                            </div>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Viability</span>
+                            <span class="meta-value">${data.viability_score}</span>
+                            <div class="score-bar">
+                                <div class="score-fill" style="width: ${data.viability_score * 100}%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="features-list">
+                    <h3 style="color: var(--primary-gold); margin-bottom: 1rem;">Synthesized Features</h3>
+                    ${data.features.map(feature => `
+                        <div class="feature-item">
+                            <div class="feature-description">
+                                ${feature.description}
+                                <span class="stage-badge stage-${feature.stage.toLowerCase()}">${feature.stage.replace('_', ' ')}</span>
+                            </div>
+                            <div class="feature-meta">
+                                <strong>Inspiration:</strong> ${feature.inspiration}<br>
+                                <strong>Notes:</strong> ${feature.notes}
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            
+            // Build SLM outputs
+            slmOutputs.innerHTML = `
+                <div class="slm-card">
+                    <div class="slm-title">◈ Mechanics & Physics</div>
+                    ${data.slm_outputs.mechanics.map(insight => `
+                        <div class="slm-insight">• ${insight}</div>
+                    `).join('')}
+                </div>
+                <div class="slm-card">
+                    <div class="slm-title">◈ Anatomy & Biology</div>
+                    ${data.slm_outputs.anatomy.map(insight => `
+                        <div class="slm-insight">• ${insight}</div>
+                    `).join('')}
+                </div>
+                <div class="slm-card">
+                    <div class="slm-title">◈ Optics & Aesthetics</div>
+                    ${data.slm_outputs.optics.map(insight => `
+                        <div class="slm-insight">• ${insight}</div>
+                    `).join('')}
+                </div>
+            `;
+            
+            resultContainer.classList.add('active');
+            slmOutputs.style.display = 'grid';
+        }
+
+        // Show error message
+        function showError(message) {
+            const errorElement = document.getElementById('errorMessage');
+            errorElement.textContent = message;
+            errorElement.classList.add('active');
+        }
+
+        // Event listeners
+        document.getElementById('generateBtn').addEventListener('click', generateDesign);
+
+        // Initialize on load
+        initializeUI();
+    </script>
+</body>
+</html>
