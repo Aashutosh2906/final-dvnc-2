@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DVNC.AI - Da Vinci-Inspired Innovation System</title>
+    <title>DVNC.AI - Da Vinci Innovation System</title>
     <style>
         * {
             margin: 0;
@@ -12,244 +12,187 @@
         }
 
         :root {
-            --primary-gold: #8B7500;  /* Deep golden olive from logo */
-            --secondary-gold: #B8960F;  /* Lighter golden */
-            --accent-gold: #DAA520;  /* Goldenrod accent */
-            --light-gold: #F4E4BC;  /* Very light gold for backgrounds */
+            --primary: #000000;
+            --secondary: #333333;
+            --tertiary: #666666;
+            --quaternary: #999999;
             --background: #FFFFFF;
-            --surface: #FAFAF8;
-            --surface-secondary: #FFFFFF;
-            --text-primary: #2C2C2C;
-            --text-secondary: #5A5A5A;
-            --text-tertiary: #8A8A8A;
-            --border-color: #E8E4D8;
-            --border-light: #F0EDE5;
-            --shadow-sm: 0 1px 3px rgba(139, 117, 0, 0.08);
-            --shadow-md: 0 4px 12px rgba(139, 117, 0, 0.1);
-            --shadow-lg: 0 10px 30px rgba(139, 117, 0, 0.12);
-            --message-user: #8B7500;
-            --message-ai: #FAF8F3;
-            --concept-color: #9B870C;
-            --prototype-color: #B8860B;
-            --production-color: #6B8E23;
+            --surface: #FAFAFA;
+            --border: #E5E5E5;
+            --accent: #0066FF;
+            --accent-light: rgba(0, 102, 255, 0.1);
+            --accent-lighter: rgba(0, 102, 255, 0.05);
+            --success: #00C896;
+            --warning: #FFB800;
+            --error: #FF3B30;
+            --mechanics: #0066FF;
+            --anatomy: #00C896;
+            --optics: #FFB800;
+            --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 16px 32px rgba(0, 0, 0, 0.12);
+            --transition: cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', 'Segoe UI', system-ui, sans-serif;
             background: var(--background);
-            color: var(--text-primary);
+            color: var(--primary);
             min-height: 100vh;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            font-size: 14px;
+            line-height: 1.5;
         }
 
-        /* Subtle gradient background */
-        body::before {
-            content: '';
+        .app-container {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            bottom: 0;
-            background: linear-gradient(180deg, #FFFFFF 0%, #FFFEF9 50%, #FFF9F0 100%);
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .app-container {
-            max-width: 1600px;
-            margin: 0 auto;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Header */
-        header {
-            background: rgba(255, 255, 255, 0.72);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 0.5px solid var(--border-light);
-            padding: 1rem 2rem;
+            height: 56px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
+            padding: 0 24px;
         }
 
-        .logo-section {
+        .logo {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 12px;
+            cursor: pointer;
         }
 
-        .logo-icon {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, var(--primary-gold), var(--accent-gold));
-            border-radius: 12px;
+        .logo-mark {
+            width: 32px;
+            height: 32px;
+            background: var(--primary);
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 600;
-            font-size: 1.1rem;
+            font-size: 12px;
             color: white;
-            box-shadow: var(--shadow-sm);
+            letter-spacing: -0.5px;
         }
 
         .logo-text {
-            font-size: 1.4rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--primary-gold), var(--secondary-gold));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            letter-spacing: -0.02em;
-        }
-
-        .tagline {
-            color: var(--text-tertiary);
-            font-size: 0.9rem;
-            font-weight: 400;
-        }
-
-        /* Main Layout */
-        .main-layout {
-            display: flex;
-            flex: 1;
-            overflow: hidden;
+            font-size: 16px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
         }
 
         /* Sidebar */
         .sidebar {
-            width: 350px;
+            width: 320px;
             background: var(--surface);
-            border-right: 0.5px solid var(--border-light);
+            border-right: 1px solid var(--border);
             display: flex;
             flex-direction: column;
-            overflow: hidden;
+            margin-top: 56px;
         }
 
         .sidebar-header {
-            padding: 1.5rem;
-            border-bottom: 0.5px solid var(--border-light);
-            background: var(--surface-secondary);
+            padding: 24px;
+            border-bottom: 1px solid var(--border);
         }
 
         .sidebar-title {
-            font-size: 1.1rem;
-            color: var(--text-primary);
+            font-size: 12px;
             font-weight: 600;
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            letter-spacing: -0.01em;
+            color: var(--tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
         }
 
-        .sidebar-title::before {
-            content: '◈';
-            font-size: 1rem;
-            color: var(--primary-gold);
+        .sidebar-subtitle {
+            font-size: 13px;
+            color: var(--quaternary);
         }
 
         .prompt-list {
             flex: 1;
             overflow-y: auto;
-            padding: 1rem;
+            padding: 16px;
         }
 
         .prompt-item {
-            background: var(--surface-secondary);
-            border: 0.5px solid var(--border-light);
-            border-radius: 12px;
-            padding: 1rem;
-            margin-bottom: 0.5rem;
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.2s var(--transition);
+            font-size: 13px;
+            color: var(--secondary);
             position: relative;
             overflow: hidden;
-            box-shadow: var(--shadow-sm);
         }
 
         .prompt-item::before {
             content: '';
             position: absolute;
             top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(139, 117, 0, 0.05), transparent);
-            transition: left 0.5s ease;
-        }
-
-        .prompt-item:hover {
-            background: var(--surface-secondary);
-            border-color: var(--primary-gold);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--accent-lighter);
+            opacity: 0;
+            transition: opacity 0.2s var(--transition);
         }
 
         .prompt-item:hover::before {
-            left: 100%;
+            opacity: 1;
         }
 
         .prompt-item.selected {
-            background: linear-gradient(135deg, rgba(139, 117, 0, 0.08), rgba(218, 165, 32, 0.05));
-            border-color: var(--primary-gold);
-            box-shadow: var(--shadow-md);
-        }
-
-        .prompt-text {
-            font-size: 0.95rem;
-            line-height: 1.5;
-            color: var(--text-secondary);
-        }
-
-        .prompt-item.selected .prompt-text {
-            color: var(--text-primary);
+            background: var(--accent-light);
+            color: var(--accent);
             font-weight: 500;
         }
 
         .generate-section {
-            padding: 1.5rem;
-            border-top: 0.5px solid var(--border-light);
-            background: var(--surface-secondary);
+            padding: 16px;
+            border-top: 1px solid var(--border);
         }
 
         .generate-btn {
             width: 100%;
-            padding: 0.875rem;
-            background: linear-gradient(135deg, var(--primary-gold), var(--secondary-gold));
-            border: none;
-            border-radius: 12px;
+            padding: 12px 20px;
+            background: var(--primary);
             color: white;
-            font-size: 1rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s ease;
-            position: relative;
-            overflow: hidden;
-            box-shadow: var(--shadow-sm);
-            letter-spacing: -0.01em;
+            transition: all 0.2s var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
-        .generate-btn::after {
-            content: '→';
-            margin-left: 0.5rem;
-            transition: transform 0.2s ease;
-        }
-
-        .generate-btn:hover {
+        .generate-btn:hover:not(:disabled) {
+            background: var(--secondary);
             transform: translateY(-1px);
             box-shadow: var(--shadow-md);
-        }
-
-        .generate-btn:hover::after {
-            transform: translateX(3px);
         }
 
         .generate-btn:disabled {
@@ -257,29 +200,92 @@
             cursor: not-allowed;
         }
 
-        /* Chat Area */
-        .chat-area {
+        .generate-btn-icon {
+            transition: transform 0.2s var(--transition);
+        }
+
+        .generate-btn:hover:not(:disabled) .generate-btn-icon {
+            transform: translateX(2px);
+        }
+
+        /* Main Content */
+        .main-content {
             flex: 1;
             display: flex;
             flex-direction: column;
+            margin-top: 56px;
             background: var(--background);
         }
 
         .chat-container {
             flex: 1;
             overflow-y: auto;
-            padding: 2rem;
+            padding: 32px;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* Welcome State */
+        .welcome-state {
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            align-items: center;
+            justify-content: center;
+            min-height: calc(100vh - 112px);
+            text-align: center;
+            animation: fadeIn 0.6s var(--transition);
         }
 
-        /* Chat Messages */
-        .message {
-            animation: messageSlide 0.5s ease;
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        @keyframes messageSlide {
+        .welcome-icon {
+            width: 64px;
+            height: 64px;
+            background: var(--surface);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .welcome-title {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        .welcome-subtitle {
+            font-size: 14px;
+            color: var(--tertiary);
+            max-width: 480px;
+            line-height: 1.6;
+        }
+
+        /* Message Thread */
+        .message-thread {
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-sm);
+            animation: slideIn 0.5s var(--transition);
+        }
+
+        @keyframes slideIn {
             from {
                 opacity: 0;
                 transform: translateY(20px);
@@ -293,549 +299,333 @@
         .message-user {
             display: flex;
             justify-content: flex-end;
+            margin-bottom: 32px;
         }
 
-        .message-user .message-content {
-            background: var(--message-user);
+        .message-user-content {
+            background: var(--primary);
             color: white;
-            border-radius: 18px 18px 4px 18px;
-            padding: 0.875rem 1.25rem;
-            max-width: 70%;
-            font-size: 0.95rem;
-            box-shadow: var(--shadow-sm);
+            padding: 12px 16px;
+            border-radius: 16px 16px 4px 16px;
+            max-width: 60%;
+            font-size: 14px;
         }
 
         .message-ai {
             display: flex;
-            gap: 0.75rem;
+            flex-direction: column;
+            gap: 24px;
         }
 
-        .ai-avatar {
-            width: 36px;
-            height: 36px;
-            background: linear-gradient(135deg, var(--primary-gold), var(--secondary-gold));
-            border-radius: 10px;
+        .ai-section {
+            opacity: 0;
+            animation: fadeInSection 0.6s var(--transition) forwards;
+        }
+
+        @keyframes fadeInSection {
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Process Steps */
+        .process-step {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            font-weight: 600;
-            color: white;
-            font-size: 0.85rem;
-            box-shadow: var(--shadow-sm);
+            align-items: flex-start;
+            gap: 16px;
+            position: relative;
         }
 
-        .message-ai .message-content {
-            background: var(--message-ai);
-            border-radius: 4px 18px 18px 18px;
-            padding: 1.25rem;
-            flex: 1;
-            max-width: 90%;
-            box-shadow: var(--shadow-sm);
-        }
-
-        /* SLM Output Sections */
-        .slm-section {
-            margin-top: 1.5rem;
-        }
-
-        .slm-header {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 0.5px solid var(--border-light);
-        }
-
-        .slm-icon {
+        .step-indicator {
             width: 32px;
             height: 32px;
-            background: linear-gradient(135deg, rgba(139, 117, 0, 0.1), rgba(218, 165, 32, 0.1));
-            border-radius: 8px;
+            background: var(--background);
+            border: 2px solid var(--border);
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1rem;
+            font-size: 14px;
+            flex-shrink: 0;
+            transition: all 0.3s var(--transition);
         }
 
-        .slm-title {
-            font-size: 1rem;
-            color: var(--primary-gold);
+        .step-indicator.active {
+            border-color: var(--accent);
+            background: var(--accent);
+            color: white;
+            animation: pulseRing 1.5s var(--transition);
+        }
+
+        @keyframes pulseRing {
+            0% {
+                box-shadow: 0 0 0 0 rgba(0, 102, 255, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(0, 102, 255, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(0, 102, 255, 0);
+            }
+        }
+
+        .step-indicator.mechanics.complete {
+            background: var(--mechanics);
+            border-color: var(--mechanics);
+            color: white;
+        }
+
+        .step-indicator.anatomy.complete {
+            background: var(--anatomy);
+            border-color: var(--anatomy);
+            color: white;
+        }
+
+        .step-indicator.optics.complete {
+            background: var(--optics);
+            border-color: var(--optics);
+            color: white;
+        }
+
+        .step-content {
+            flex: 1;
+            padding-bottom: 24px;
+        }
+
+        .step-title {
+            font-size: 13px;
             font-weight: 600;
-            letter-spacing: -0.01em;
+            color: var(--tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .slm-output-list {
+        .step-status {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 12px;
+            background: var(--accent-lighter);
+            color: var(--accent);
+            animation: blink 1.5s ease-in-out infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .step-status.complete {
+            background: var(--success);
+            color: white;
+            animation: none;
+        }
+
+        .step-outputs {
             display: flex;
             flex-direction: column;
-            gap: 0.75rem;
+            gap: 12px;
         }
 
-        .slm-output-item {
-            background: linear-gradient(135deg, rgba(139, 117, 0, 0.03), rgba(218, 165, 32, 0.02));
-            border-left: 2px solid var(--primary-gold);
-            border-radius: 0 8px 8px 0;
-            padding: 1rem;
-            transition: all 0.2s ease;
+        .output-item {
+            padding: 16px;
+            background: var(--background);
+            border-radius: 8px;
+            border-left: 3px solid var(--border);
+            transition: all 0.2s var(--transition);
+            opacity: 0;
+            animation: slideInOutput 0.5s var(--transition) forwards;
         }
 
-        .slm-output-item:hover {
-            background: linear-gradient(135deg, rgba(139, 117, 0, 0.05), rgba(218, 165, 32, 0.03));
-            transform: translateX(3px);
+        @keyframes slideInOutput {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
 
-        .slm-feature-desc {
-            color: var(--text-primary);
-            margin-bottom: 0.5rem;
+        .output-item.mechanics {
+            border-left-color: var(--mechanics);
+        }
+
+        .output-item.anatomy {
+            border-left-color: var(--anatomy);
+        }
+
+        .output-item.optics {
+            border-left-color: var(--optics);
+        }
+
+        .output-description {
+            font-size: 14px;
+            color: var(--primary);
+            margin-bottom: 8px;
             line-height: 1.6;
-            font-size: 0.95rem;
         }
 
-        .slm-inspiration {
-            font-size: 0.875rem;
-            color: var(--text-tertiary);
+        .output-inspiration {
+            font-size: 13px;
+            color: var(--tertiary);
             font-style: italic;
-            padding-left: 1rem;
-            border-left: 1.5px solid var(--border-light);
+            padding-left: 12px;
+            border-left: 2px solid var(--border);
         }
 
-        .slm-source {
-            color: var(--primary-gold);
-            font-weight: 500;
+        .output-source {
+            font-size: 12px;
+            color: var(--quaternary);
+            margin-top: 4px;
         }
 
-        /* Synthesis Section */
-        .synthesis-section {
-            margin-top: 2rem;
-            padding: 1.5rem;
-            background: linear-gradient(135deg, rgba(139, 117, 0, 0.04), rgba(218, 165, 32, 0.03));
-            border: 0.5px solid var(--border-light);
+        /* Synthesis Visualization */
+        .synthesis-container {
+            padding: 32px;
+            margin: 32px 0;
+            background: linear-gradient(135deg, var(--accent-lighter), transparent);
             border-radius: 16px;
-            box-shadow: var(--shadow-sm);
+            position: relative;
+            opacity: 0;
+            animation: fadeInScale 0.8s var(--transition) forwards;
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
 
         .synthesis-header {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .synthesis-icon {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, var(--primary-gold), var(--secondary-gold));
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.2rem;
-            box-shadow: var(--shadow-sm);
+            text-align: center;
+            margin-bottom: 32px;
         }
 
         .synthesis-title {
-            font-size: 1.25rem;
-            color: var(--primary-gold);
+            font-size: 16px;
             font-weight: 600;
-            letter-spacing: -0.01em;
+            margin-bottom: 8px;
         }
 
-        /* Feature Cards */
-        .features-grid {
-            display: grid;
-            gap: 1rem;
-            margin-top: 1.5rem;
+        .synthesis-subtitle {
+            font-size: 13px;
+            color: var(--tertiary);
         }
 
-        .feature-card {
-            background: var(--surface-secondary);
-            border: 0.5px solid var(--border-light);
-            border-radius: 12px;
-            padding: 1.25rem;
-            transition: all 0.2s ease;
+        .synthesis-visual {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 48px;
+            margin: 48px 0;
             position: relative;
-            overflow: hidden;
-            box-shadow: var(--shadow-sm);
         }
 
-        .feature-card:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .feature-number {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            width: 28px;
-            height: 28px;
-            background: linear-gradient(135deg, rgba(139, 117, 0, 0.1), rgba(218, 165, 32, 0.1));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary-gold);
-            font-size: 0.875rem;
-            font-weight: 600;
-        }
-
-        .feature-description {
-            color: var(--text-primary);
-            line-height: 1.6;
-            margin-bottom: 1rem;
-            padding-right: 3rem;
-            font-size: 0.95rem;
-        }
-
-        .feature-inspiration {
-            background: var(--surface);
-            border-left: 2px solid var(--primary-gold);
-            padding: 0.75rem;
-            margin: 1rem 0;
-            font-size: 0.875rem;
-            color: var(--text-tertiary);
-            font-style: italic;
-            border-radius: 0 8px 8px 0;
-        }
-
-        .feature-metadata {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .development-stage {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.3rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .stage-concept {
-            background: rgba(88, 86, 214, 0.1);
-            color: var(--concept-color);
-        }
-
-        .stage-prototype {
-            background: rgba(255, 149, 0, 0.1);
-            color: var(--prototype-color);
-        }
-
-        .stage-production {
-            background: rgba(52, 199, 89, 0.1);
-            color: var(--production-color);
-        }
-
-        .engineering-notes {
-            flex: 1;
-            font-size: 0.85rem;
-            color: var(--text-tertiary);
-            line-height: 1.5;
-        }
-
-        /* Final Product Section */
-        .product-summary {
-            margin-top: 2rem;
-            padding: 1.5rem;
-            background: var(--surface-secondary);
-            border: 0.5px solid var(--primary-gold);
-            border-radius: 16px;
-            box-shadow: var(--shadow-md);
-        }
-
-        .product-header {
-            margin-bottom: 1.5rem;
-        }
-
-        .product-name {
-            font-size: 1.4rem;
-            color: var(--primary-gold);
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            letter-spacing: -0.01em;
-        }
-
-        .product-market {
-            color: var(--text-tertiary);
-            font-size: 0.95rem;
-        }
-
-        .scores-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin: 1.5rem 0;
-        }
-
-        .score-item {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .score-label {
-            color: var(--text-tertiary);
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            font-weight: 500;
-        }
-
-        .score-value-container {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .score-value {
-            font-size: 1.4rem;
-            font-weight: 600;
-            color: var(--primary-gold);
-        }
-
-        .score-bar {
-            flex: 1;
-            height: 6px;
-            background: var(--surface);
-            border-radius: 3px;
-            overflow: hidden;
-        }
-
-        .score-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary-gold), var(--accent-gold));
-            transition: width 1.5s ease;
-            border-radius: 3px;
-        }
-
-        .product-description {
-            padding: 1.5rem;
-            background: linear-gradient(135deg, rgba(139, 117, 0, 0.03), rgba(218, 165, 32, 0.02));
-            border-left: 2px solid var(--primary-gold);
-            border-radius: 0 12px 12px 0;
-            line-height: 1.7;
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-        }
-
-        .principles-list {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-            margin-top: 1rem;
-        }
-
-        .principle-tag {
-            padding: 0.3rem 0.75rem;
-            background: linear-gradient(135deg, rgba(139, 117, 0, 0.08), rgba(218, 165, 32, 0.05));
-            border-radius: 20px;
-            font-size: 0.8rem;
-            color: var(--primary-gold);
-            font-weight: 500;
-        }
-
-        /* Loading Animation */
-        .loading-indicator {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1rem;
-            background: linear-gradient(135deg, rgba(139, 117, 0, 0.05), rgba(218, 165, 32, 0.03));
-            border-radius: 12px;
-            margin: 1rem 0;
-        }
-
-        .spinner {
-            width: 24px;
-            height: 24px;
-            border: 2px solid var(--border-light);
-            border-top-color: var(--primary-gold);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .loading-text {
-            color: var(--text-tertiary);
-            font-size: 0.95rem;
-        }
-
-        /* Welcome State */
-        .welcome-state {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 3rem;
-            text-align: center;
-        }
-
-        .welcome-icon {
+        .knowledge-node {
             width: 80px;
             height: 80px;
-            background: linear-gradient(135deg, var(--primary-gold), var(--secondary-gold));
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            color: white;
-            margin-bottom: 2rem;
-            animation: float 3s ease-in-out infinite;
-            box-shadow: var(--shadow-md);
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .welcome-title {
-            font-size: 1.75rem;
-            color: var(--primary-gold);
-            margin-bottom: 1rem;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-        }
-
-        .welcome-subtitle {
-            font-size: 1rem;
-            color: var(--text-tertiary);
-            line-height: 1.6;
-            max-width: 500px;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .sidebar {
-                display: none;
-            }
-            
-            .chat-area {
-                width: 100%;
-            }
-        }
-
-        /* Synthesis Animation - Updated Colors */
-        .synthesis-animation {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 2rem 0;
-            position: relative;
-            height: 150px;
-        }
-
-        .slm-node-container {
-            position: absolute;
+            background: var(--background);
+            border-radius: 50%;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 0.5rem;
-        }
-
-        .slm-node {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
-            background: var(--surface-secondary);
-            border: 2px solid var(--primary-gold);
-            animation: nodeAppear 0.5s ease forwards;
+            gap: 4px;
             box-shadow: var(--shadow-md);
-        }
-
-        .slm-node-label {
-            font-size: 0.75rem;
-            color: var(--text-tertiary);
-            text-align: center;
+            position: relative;
+            z-index: 2;
             opacity: 0;
-            animation: fadeInLabel 0.5s ease forwards;
-            font-weight: 500;
+            animation: nodeAppear 0.6s var(--transition) forwards;
         }
 
         @keyframes nodeAppear {
             from {
-                transform: scale(0);
                 opacity: 0;
+                transform: scale(0);
             }
             to {
-                transform: scale(1);
                 opacity: 1;
+                transform: scale(1);
             }
         }
 
-        @keyframes fadeInLabel {
+        .knowledge-node.mechanics {
+            animation-delay: 0s;
+            border: 2px solid var(--mechanics);
+        }
+
+        .knowledge-node.anatomy {
+            animation-delay: 0.2s;
+            border: 2px solid var(--anatomy);
+        }
+
+        .knowledge-node.optics {
+            animation-delay: 0.4s;
+            border: 2px solid var(--optics);
+        }
+
+        .node-icon {
+            font-size: 24px;
+        }
+
+        .node-label {
+            font-size: 11px;
+            color: var(--tertiary);
+            font-weight: 500;
+        }
+
+        .synthesis-center {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--mechanics), var(--anatomy), var(--optics));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 32px;
+            opacity: 0;
+            animation: centerExpand 1s var(--transition) 0.8s forwards;
+            box-shadow: var(--shadow-xl);
+        }
+
+        @keyframes centerExpand {
             from {
                 opacity: 0;
-                transform: translateY(-10px);
+                transform: scale(0) rotate(0deg);
             }
             to {
                 opacity: 1;
-                transform: translateY(0);
+                transform: scale(1) rotate(360deg);
             }
         }
 
-        .slm-node-container.mechanics {
-            left: 0;
-        }
-
-        .slm-node-container.mechanics .slm-node {
-            animation-delay: 0s;
-        }
-
-        .slm-node-container.mechanics .slm-node-label {
-            animation-delay: 0.3s;
-        }
-
-        .slm-node-container.anatomy {
+        .connection-lines {
+            position: absolute;
+            top: 50%;
             left: 50%;
-            transform: translateX(-50%);
-        }
-
-        .slm-node-container.anatomy .slm-node {
-            animation-delay: 0.2s;
-        }
-
-        .slm-node-container.anatomy .slm-node-label {
-            animation-delay: 0.5s;
-        }
-
-        .slm-node-container.optics {
-            right: 0;
-        }
-
-        .slm-node-container.optics .slm-node {
-            animation-delay: 0.4s;
-        }
-
-        .slm-node-container.optics .slm-node-label {
-            animation-delay: 0.7s;
+            width: 100%;
+            height: 2px;
+            transform: translate(-50%, -50%);
         }
 
         .connection-line {
             position: absolute;
             height: 2px;
-            background: linear-gradient(90deg, transparent, var(--primary-gold), transparent);
-            top: 30px;
-            animation: lineGrow 1s ease forwards;
-            animation-delay: 0.8s;
+            background: linear-gradient(90deg, transparent, var(--tertiary), transparent);
             opacity: 0;
+            animation: lineGrow 0.8s var(--transition) 0.6s forwards;
         }
 
         @keyframes lineGrow {
@@ -844,127 +634,328 @@
                 opacity: 0;
             }
             to {
-                width: 100%;
-                opacity: 1;
+                width: 150px;
+                opacity: 0.3;
             }
         }
 
-        .connection-line.left {
-            left: 60px;
-            width: calc(50% - 60px);
+        /* Features Grid */
+        .features-section {
+            margin-top: 32px;
         }
 
-        .connection-line.right {
-            right: 60px;
-            width: calc(50% - 60px);
+        .features-header {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
         }
 
-        .synthesis-center {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary-gold), var(--accent-gold));
-            display: flex;
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+        }
+
+        .feature-card {
+            background: var(--background);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.2s var(--transition);
+            opacity: 0;
+            animation: slideInFeature 0.5s var(--transition) forwards;
+        }
+
+        @keyframes slideInFeature {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .feature-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .feature-number {
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
+            width: 24px;
+            height: 24px;
+            background: var(--surface);
+            border-radius: 50%;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--tertiary);
+            margin-bottom: 12px;
+        }
+
+        .feature-description {
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 12px;
+            color: var(--primary);
+        }
+
+        .feature-inspiration {
+            font-size: 13px;
+            color: var(--tertiary);
+            font-style: italic;
+            padding: 12px;
+            background: var(--surface);
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+
+        .feature-metadata {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .development-stage {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stage-concept {
+            background: var(--accent-lighter);
+            color: var(--accent);
+        }
+
+        .stage-prototype {
+            background: rgba(255, 184, 0, 0.1);
+            color: var(--warning);
+        }
+
+        .stage-production-ready {
+            background: rgba(0, 200, 150, 0.1);
+            color: var(--success);
+        }
+
+        .engineering-notes {
+            font-size: 12px;
+            color: var(--quaternary);
+            line-height: 1.4;
+        }
+
+        /* Final Product */
+        .product-section {
+            margin-top: 48px;
+            padding: 32px;
+            background: var(--primary);
             color: white;
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            animation: centerPulse 1s ease forwards;
-            animation-delay: 1.4s;
-            box-shadow: 0 0 30px rgba(139, 117, 0, 0.4);
-        }
-
-        @keyframes centerPulse {
-            0% {
-                transform: translate(-50%, -50%) scale(0);
-                opacity: 0;
-            }
-            50% {
-                transform: translate(-50%, -50%) scale(1.2);
-                opacity: 1;
-            }
-            100% {
-                transform: translate(-50%, -50%) scale(1);
-                opacity: 1;
-            }
-        }
-
-        .synthesis-text {
-            text-align: center;
-            margin-top: 1rem;
+            border-radius: 16px;
             opacity: 0;
-            animation: fadeIn 0.5s ease forwards;
-            animation-delay: 2s;
+            animation: fadeInProduct 0.8s var(--transition) forwards;
         }
 
-        /* Scrollbar Styling */
+        @keyframes fadeInProduct {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .product-header {
+            margin-bottom: 32px;
+        }
+
+        .product-name {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .product-market {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .scores-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin: 32px 0;
+        }
+
+        .score-item {
+            text-align: center;
+        }
+
+        .score-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            opacity: 0.6;
+            margin-bottom: 8px;
+        }
+
+        .score-value {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .score-bar {
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .score-fill {
+            height: 100%;
+            background: white;
+            border-radius: 2px;
+            transition: width 1.5s var(--transition);
+        }
+
+        .product-description {
+            padding: 24px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            line-height: 1.8;
+            font-size: 14px;
+        }
+
+        .principles-list {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+
+        .principle-tag {
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        /* Loading State */
+        .loading-pulse {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: pulse 1.4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 80%, 100% {
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+            40% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .loading-pulse:nth-child(2) {
+            animation-delay: 0.2s;
+            margin-left: 4px;
+        }
+
+        .loading-pulse:nth-child(3) {
+            animation-delay: 0.4s;
+            margin-left: 4px;
+        }
+
+        /* Scrollbar */
         ::-webkit-scrollbar {
-            width: 10px;
-            height: 10px;
+            width: 8px;
+            height: 8px;
         }
 
         ::-webkit-scrollbar-track {
-            background: var(--surface);
-            border-radius: 5px;
+            background: transparent;
         }
 
         ::-webkit-scrollbar-thumb {
-            background: var(--border-color);
-            border-radius: 5px;
+            background: var(--border);
+            border-radius: 4px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: var(--text-tertiary);
+            background: var(--quaternary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            
+            .synthesis-visual {
+                flex-direction: column;
+                gap: 24px;
+            }
+            
+            .connection-lines {
+                display: none;
+            }
         }
     </style>
 </head>
 <body>
     <div class="app-container">
-        <header>
-            <div class="logo-section">
-                <div class="logo-icon">DV</div>
-                <div>
-                    <div class="logo-text">DVNC.AI</div>
-                    <div class="tagline">Da Vinci-Inspired Product Design System</div>
-                </div>
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">
+                <div class="logo-mark">DV</div>
+                <div class="logo-text">DVNC.AI</div>
             </div>
-        </header>
+        </div>
 
-        <div class="main-layout">
-            <!-- Sidebar -->
-            <div class="sidebar">
-                <div class="sidebar-header">
-                    <div class="sidebar-title">Design Prompts</div>
-                    <p style="color: var(--text-secondary); font-size: 0.85rem;">Select a prompt to begin the design synthesis</p>
-                </div>
-                
-                <div class="prompt-list" id="promptList">
-                    <!-- Prompts will be populated here -->
-                </div>
-
-                <div class="generate-section">
-                    <button class="generate-btn" id="generateBtn" disabled>
-                        Generate Da Vinci Design
-                    </button>
-                </div>
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-title">Design Prompts</div>
+                <div class="sidebar-subtitle">Select a prompt to begin synthesis</div>
             </div>
+            
+            <div class="prompt-list" id="promptList"></div>
 
-            <!-- Chat Area -->
-            <div class="chat-area">
-                <div class="chat-container" id="chatContainer">
-                    <!-- Welcome State -->
-                    <div class="welcome-state" id="welcomeState">
-                        <div class="welcome-icon">◈</div>
-                        <div class="welcome-title">Welcome to DVNC.AI</div>
-                        <div class="welcome-subtitle">
-                            Select a design prompt from the left panel to begin the polymathic synthesis process. 
-                            I'll channel da Vinci's knowledge verticals—mechanics, anatomy, and optics—to generate 
-                            innovative, market-ready product designs.
-                        </div>
+            <div class="generate-section">
+                <button class="generate-btn" id="generateBtn" disabled>
+                    <span>Generate Design</span>
+                    <span class="generate-btn-icon">→</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="chat-container" id="chatContainer">
+                <div class="welcome-state" id="welcomeState">
+                    <div class="welcome-icon">◈</div>
+                    <div class="welcome-title">Welcome to DVNC.AI</div>
+                    <div class="welcome-subtitle">
+                        Select a design prompt to begin the polymathic synthesis process. 
+                        I'll channel da Vinci's knowledge verticals to generate innovative, market-ready product designs.
                     </div>
                 </div>
             </div>
@@ -972,7 +963,6 @@
     </div>
 
     <script>
-        // Configuration
         const API_URL = '/api/generate';
         
         const prompts = [
@@ -991,7 +981,6 @@
         let selectedPrompt = '';
         let isGenerating = false;
 
-        // Initialize UI
         function initializeUI() {
             const promptList = document.getElementById('promptList');
             
@@ -999,13 +988,12 @@
                 const promptItem = document.createElement('div');
                 promptItem.className = 'prompt-item';
                 promptItem.dataset.prompt = prompt;
-                promptItem.innerHTML = `<div class="prompt-text">${prompt}</div>`;
+                promptItem.textContent = prompt;
                 promptItem.onclick = () => selectPrompt(prompt, promptItem);
                 promptList.appendChild(promptItem);
             });
         }
 
-        // Select prompt
         function selectPrompt(prompt, element) {
             if (isGenerating) return;
             
@@ -1018,176 +1006,113 @@
             document.getElementById('generateBtn').disabled = false;
         }
 
-        // Clear chat and add user message
-        function startConversation(prompt) {
-            const chatContainer = document.getElementById('chatContainer');
-            const welcomeState = document.getElementById('welcomeState');
-            
-            if (welcomeState) {
-                welcomeState.remove();
-            }
-            
-            chatContainer.innerHTML = '';
-            
-            // Add user message
-            const userMessage = document.createElement('div');
-            userMessage.className = 'message message-user';
-            userMessage.innerHTML = `
-                <div class="message-content">
-                    Design ${prompt}
-                </div>
-            `;
-            chatContainer.appendChild(userMessage);
-        }
-
-        // Add AI message with typing indicator
-        function addAIMessage(content, isLoading = false) {
-            const chatContainer = document.getElementById('chatContainer');
-            
-            const aiMessage = document.createElement('div');
-            aiMessage.className = 'message message-ai';
-            aiMessage.innerHTML = `
-                <div class="ai-avatar">DV</div>
-                <div class="message-content">
-                    ${isLoading ? `
-                        <div class="loading-indicator">
-                            <div class="spinner"></div>
-                            <div class="loading-text">${content}</div>
+        function createMessageThread(userPrompt) {
+            return `
+                <div class="message-thread">
+                    <div class="message-user">
+                        <div class="message-user-content">
+                            Design ${userPrompt}
                         </div>
-                    ` : content}
+                    </div>
+                    <div class="message-ai" id="aiMessage">
+                        <!-- AI response will be populated here -->
+                    </div>
                 </div>
             `;
-            
-            chatContainer.appendChild(aiMessage);
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-            
-            return aiMessage;
         }
 
-        // Format SLM outputs with proper source parsing
-        function formatSLMOutput(title, icon, outputs, type) {
-            let outputHtml = outputs.map((output, idx) => {
-                // Parse the output to extract description, inspiration, and source
+        function formatSLMOutputs(type, icon, outputs) {
+            let outputsHtml = outputs.map((output, idx) => {
                 let description = output;
                 let inspiration = '';
                 let source = '';
                 
-                // Parse the "||" separated format
                 if (output.includes('||')) {
                     const parts = output.split('||').map(p => p.trim());
                     description = parts[0];
-                    
-                    // The second part contains the full inspiration quote
-                    if (parts[1]) {
-                        inspiration = parts[1];
-                    }
-                    
-                    // The third part contains the source
-                    if (parts[2]) {
-                        source = parts[2].replace('Source:', '').trim();
-                    }
+                    if (parts[1]) inspiration = parts[1];
+                    if (parts[2]) source = parts[2].replace('Source:', '').trim();
                 }
                 
                 return `
-                    <div class="slm-output-item">
-                        <div class="slm-feature-desc">• ${description}</div>
+                    <div class="output-item ${type}" style="animation-delay: ${idx * 0.1}s">
+                        <div class="output-description">• ${description}</div>
                         ${inspiration ? `
-                            <div class="slm-inspiration">
-                                <strong>Inspiration:</strong> "${inspiration}"
-                                ${source ? `<br><span class="slm-source">Source: ${source}</span>` : ''}
+                            <div class="output-inspiration">
+                                "${inspiration}"
+                                ${source ? `<div class="output-source">— ${source}</div>` : ''}
                             </div>
                         ` : ''}
                     </div>
                 `;
             }).join('');
             
-            return `
-                <div class="slm-section">
-                    <div class="slm-header">
-                        <div class="slm-icon">${icon}</div>
-                        <div class="slm-title">${title}</div>
-                    </div>
-                    <div class="slm-output-list">
-                        ${outputHtml}
-                    </div>
-                </div>
-            `;
+            return outputsHtml;
         }
 
-        // Format synthesized features
         function formatFeatures(features) {
             return features.map((feature, idx) => `
-                <div class="feature-card">
+                <div class="feature-card" style="animation-delay: ${idx * 0.1}s">
                     <div class="feature-number">${idx + 1}</div>
                     <div class="feature-description">${feature.description}</div>
                     <div class="feature-inspiration">
-                        <strong>Inspiration:</strong> ${feature.inspiration}
+                        "${feature.inspiration}"
                     </div>
                     <div class="feature-metadata">
                         <div class="development-stage stage-${feature.stage.toLowerCase().replace('_', '-')}">
                             ${feature.stage.replace('_', ' ')}
                         </div>
-                        <div class="engineering-notes">
-                            ${feature.notes}
-                        </div>
+                        <div class="engineering-notes">${feature.notes}</div>
                     </div>
                 </div>
             `).join('');
         }
 
-        // Format final product summary
-        function formatProductSummary(data) {
+        function formatProduct(data) {
             return `
-                <div class="product-summary">
+                <div class="product-section">
                     <div class="product-header">
                         <div class="product-name">${data.name}</div>
                         <div class="product-market">Target Market: ${data.target_market}</div>
                     </div>
                     
-                    <div class="scores-grid">
+                    <div class="scores-container">
                         <div class="score-item">
-                            <div class="score-label">Innovation Score</div>
-                            <div class="score-value-container">
-                                <div class="score-value">${data.innovation_score}/10</div>
-                                <div class="score-bar">
-                                    <div class="score-fill" style="width: ${data.innovation_score * 10}%"></div>
-                                </div>
+                            <div class="score-label">Innovation</div>
+                            <div class="score-value">${data.innovation_score}</div>
+                            <div class="score-bar">
+                                <div class="score-fill" style="width: ${data.innovation_score * 10}%"></div>
                             </div>
                         </div>
                         <div class="score-item">
-                            <div class="score-label">Feasibility Score</div>
-                            <div class="score-value-container">
-                                <div class="score-value">${data.feasibility_score}/10</div>
-                                <div class="score-bar">
-                                    <div class="score-fill" style="width: ${data.feasibility_score * 10}%"></div>
-                                </div>
+                            <div class="score-label">Feasibility</div>
+                            <div class="score-value">${data.feasibility_score}</div>
+                            <div class="score-bar">
+                                <div class="score-fill" style="width: ${data.feasibility_score * 10}%"></div>
                             </div>
                         </div>
                         <div class="score-item">
-                            <div class="score-label">Market Viability</div>
-                            <div class="score-value-container">
-                                <div class="score-value">${data.viability_score}</div>
-                                <div class="score-bar">
-                                    <div class="score-fill" style="width: ${data.viability_score * 100}%"></div>
-                                </div>
+                            <div class="score-label">Viability</div>
+                            <div class="score-value">${(data.viability_score * 100).toFixed(0)}%</div>
+                            <div class="score-bar">
+                                <div class="score-fill" style="width: ${data.viability_score * 100}%"></div>
                             </div>
                         </div>
                     </div>
                     
                     <div class="product-description">
-                        <strong>Finished Product Description:</strong><br><br>
                         The ${data.name} revolutionizes the ${data.product_type} category for ${data.target_market} users.
                         Drawing from da Vinci's genius, it seamlessly blends mechanical precision, biological inspiration, and aesthetic elegance.
                         
                         ${data.features.map(feat => `
-                            <br><br>It incorporates ${feat.description.toLowerCase()}, inspired by "${feat.inspiration}", 
+                            It incorporates ${feat.description.toLowerCase()}, inspired by "${feat.inspiration}", 
                             currently at ${feat.stage.toLowerCase().replace('_', ' ')} stage (${feat.notes.toLowerCase()}).
-                        `).join('')}
+                        `).join(' ')}
                         
-                        <br><br>This design not only scores ${data.innovation_score}/10 in innovation but also ${data.feasibility_score}/10 
-                        in feasibility, yielding a strong market viability of ${data.viability_score}. 
+                        This design not only scores ${data.innovation_score}/10 in innovation but also ${data.feasibility_score}/10 
+                        in feasibility, yielding a strong market viability of ${(data.viability_score * 100).toFixed(0)}%. 
                         
-                        <br><br>Imagine a product that feels like an extension of nature itself—durable, intuitive, and beautifully 
+                        Imagine a product that feels like an extension of nature itself—durable, intuitive, and beautifully 
                         crafted for everyday use, embodying the Renaissance ideal of perfect harmony between form and function.
                     </div>
                     
@@ -1200,7 +1125,6 @@
             `;
         }
 
-        // Generate design with sequential animations
         async function generateDesign() {
             if (!selectedPrompt || isGenerating) return;
             
@@ -1208,293 +1132,202 @@
             const generateBtn = document.getElementById('generateBtn');
             generateBtn.disabled = true;
             
-            // Start conversation
-            startConversation(selectedPrompt);
+            const chatContainer = document.getElementById('chatContainer');
+            const welcomeState = document.getElementById('welcomeState');
+            if (welcomeState) welcomeState.remove();
             
-            // Wait a bit for user message to settle
-            await new Promise(resolve => setTimeout(resolve, 500));
+            chatContainer.innerHTML = createMessageThread(selectedPrompt);
+            const aiMessage = document.getElementById('aiMessage');
             
-            // Add initial AI response
-            let loadingMessage = addAIMessage('Initializing Da Vinci knowledge synthesis system...', true);
+            // Create the unified AI response structure
+            let responseHTML = `
+                <div class="ai-section" style="animation-delay: 0s">
+                    <div class="step-title">
+                        Initializing Da Vinci Knowledge Synthesis
+                        <span class="step-status" id="initStatus">Processing</span>
+                    </div>
+                </div>
+                
+                <div class="process-step" id="mechanicsStep">
+                    <div class="step-indicator mechanics" id="mechanicsIndicator">⚙</div>
+                    <div class="step-content">
+                        <div class="step-title">
+                            Mechanics & Physics SLM
+                            <span class="step-status" id="mechanicsStatus" style="display: none">Processing</span>
+                        </div>
+                        <div class="step-outputs" id="mechanicsOutputs"></div>
+                    </div>
+                </div>
+                
+                <div class="process-step" id="anatomyStep">
+                    <div class="step-indicator anatomy" id="anatomyIndicator">🦋</div>
+                    <div class="step-content">
+                        <div class="step-title">
+                            Anatomy & Biology SLM
+                            <span class="step-status" id="anatomyStatus" style="display: none">Processing</span>
+                        </div>
+                        <div class="step-outputs" id="anatomyOutputs"></div>
+                    </div>
+                </div>
+                
+                <div class="process-step" id="opticsStep">
+                    <div class="step-indicator optics" id="opticsIndicator">👁</div>
+                    <div class="step-content">
+                        <div class="step-title">
+                            Optics & Aesthetics SLM
+                            <span class="step-status" id="opticsStatus" style="display: none">Processing</span>
+                        </div>
+                        <div class="step-outputs" id="opticsOutputs"></div>
+                    </div>
+                </div>
+                
+                <div id="synthesisSection"></div>
+                <div id="featuresSection"></div>
+                <div id="productSection"></div>
+            `;
+            
+            aiMessage.innerHTML = responseHTML;
             
             try {
-                // Make API call
+                // Simulate initialization
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                document.getElementById('initStatus').textContent = 'Complete';
+                document.getElementById('initStatus').classList.add('complete');
+                
+                // Make API call or use mock data
                 const response = await fetch(API_URL, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ prompt: selectedPrompt })
-                });
-
-                if (!response.ok) {
-                    throw new Error('Failed to generate design');
-                }
-
-                const data = await response.json();
+                }).catch(() => null);
                 
-                // Remove initial loading message
-                await new Promise(resolve => setTimeout(resolve, 1500));
-                loadingMessage.remove();
+                const data = response && response.ok ? await response.json() : getMockData();
                 
-                // Step 1: Announce SLM activation
-                addAIMessage('<div style="margin-bottom: 1rem; color: var(--text-secondary);">Activating specialized Small Language Models (SLMs) based on da Vinci\'s knowledge domains...</div>');
-                await new Promise(resolve => setTimeout(resolve, 1000));
+                // Process each SLM sequentially
+                await processSLM('mechanics', '⚙', data.slm_outputs.mechanics);
+                await processSLM('anatomy', '🦋', data.slm_outputs.anatomy);
+                await processSLM('optics', '👁', data.slm_outputs.optics);
                 
-                // Step 2: Mechanics & Physics SLM with delay
-                loadingMessage = addAIMessage('🔄 Activating Mechanics & Physics SLM...', true);
-                await new Promise(resolve => setTimeout(resolve, 1500));
-                loadingMessage.remove();
-                
-                if (data.slm_outputs && data.slm_outputs.mechanics) {
-                    addAIMessage(formatSLMOutput(
-                        'Mechanics & Physics SLM Output',
-                        '⚙',
-                        data.slm_outputs.mechanics,
-                        'mechanics'
-                    ));
-                }
-                await new Promise(resolve => setTimeout(resolve, 1200));
-                
-                // Step 3: Anatomy & Biology SLM with delay
-                loadingMessage = addAIMessage('🔄 Activating Anatomy & Biology SLM...', true);
-                await new Promise(resolve => setTimeout(resolve, 1500));
-                loadingMessage.remove();
-                
-                if (data.slm_outputs && data.slm_outputs.anatomy) {
-                    addAIMessage(formatSLMOutput(
-                        'Anatomy & Biology SLM Output',
-                        '🦋',
-                        data.slm_outputs.anatomy,
-                        'anatomy'
-                    ));
-                }
-                await new Promise(resolve => setTimeout(resolve, 1200));
-                
-                // Step 4: Optics & Aesthetics SLM with delay
-                loadingMessage = addAIMessage('🔄 Activating Optics & Aesthetics SLM...', true);
-                await new Promise(resolve => setTimeout(resolve, 1500));
-                loadingMessage.remove();
-                
-                if (data.slm_outputs && data.slm_outputs.optics) {
-                    addAIMessage(formatSLMOutput(
-                        'Optics & Aesthetics SLM Output',
-                        '👁',
-                        data.slm_outputs.optics,
-                        'optics'
-                    ));
-                }
-                await new Promise(resolve => setTimeout(resolve, 1500));
-                
-                // Step 5: Synthesis with animation
-                loadingMessage = addAIMessage('⚡ Engaging Da Vinci Abstraction Organ for synthesis...', true);
-                await new Promise(resolve => setTimeout(resolve, 2000));
-                loadingMessage.remove();
-                
-                // Add synthesis animation
-                const synthesisAnimationContent = `
-                    <div class="synthesis-animation">
-                        <div class="slm-node-container mechanics">
-                            <div class="slm-node">⚙</div>
-                            <div class="slm-node-label">Mechanics</div>
+                // Synthesis animation
+                await new Promise(resolve => setTimeout(resolve, 500));
+                document.getElementById('synthesisSection').innerHTML = `
+                    <div class="synthesis-container">
+                        <div class="synthesis-header">
+                            <div class="synthesis-title">Da Vinci Abstraction Organ</div>
+                            <div class="synthesis-subtitle">Synthesizing knowledge domains...</div>
                         </div>
-                        <div class="connection-line left"></div>
-                        <div class="slm-node-container anatomy">
-                            <div class="slm-node">🦋</div>
-                            <div class="slm-node-label">Anatomy</div>
+                        <div class="synthesis-visual">
+                            <div class="knowledge-node mechanics">
+                                <div class="node-icon">⚙</div>
+                                <div class="node-label">Mechanics</div>
+                            </div>
+                            <div class="knowledge-node anatomy">
+                                <div class="node-icon">🦋</div>
+                                <div class="node-label">Anatomy</div>
+                            </div>
+                            <div class="knowledge-node optics">
+                                <div class="node-icon">👁</div>
+                                <div class="node-label">Optics</div>
+                            </div>
+                            <div class="connection-lines">
+                                <div class="connection-line"></div>
+                            </div>
+                            <div class="synthesis-center">◈</div>
                         </div>
-                        <div class="connection-line right"></div>
-                        <div class="slm-node-container optics">
-                            <div class="slm-node">👁</div>
-                            <div class="slm-node-label">Optics</div>
-                        </div>
-                        <div class="synthesis-center">◈</div>
-                    </div>
-                    <div class="synthesis-text">
-                        <strong style="color: var(--primary-gold);">Synthesizing knowledge domains...</strong>
                     </div>
                 `;
                 
-                const animationMessage = addAIMessage(synthesisAnimationContent);
-                await new Promise(resolve => setTimeout(resolve, 2500));
-                animationMessage.remove();
+                await new Promise(resolve => setTimeout(resolve, 2000));
                 
-                const synthesisContent = `
-                    <div class="synthesis-section">
-                        <div class="synthesis-header">
-                            <div class="synthesis-icon">◈</div>
-                            <div class="synthesis-title">Da Vinci Abstraction Organ: Synthesis Complete</div>
-                        </div>
-                        <p style="color: var(--text-secondary); margin-bottom: 1rem;">
-                            Synthesizing outputs from the three SLMs into cohesive design features...
-                        </p>
+                // Features
+                document.getElementById('featuresSection').innerHTML = `
+                    <div class="features-section">
+                        <div class="features-header">Synthesized Design Features</div>
                         <div class="features-grid">
                             ${formatFeatures(data.features)}
                         </div>
                     </div>
                 `;
-                addAIMessage(synthesisContent);
-                await new Promise(resolve => setTimeout(resolve, 2000));
                 
-                // Step 6: Final product generation with dramatic pause
-                loadingMessage = addAIMessage('🎨 Generating final product design: <strong style="color: var(--primary-gold);">' + data.name + '</strong>...', true);
-                await new Promise(resolve => setTimeout(resolve, 2500));
-                loadingMessage.remove();
+                await new Promise(resolve => setTimeout(resolve, 1000));
                 
-                // Add final product summary
-                addAIMessage(formatProductSummary(data));
+                // Final product
+                document.getElementById('productSection').innerHTML = formatProduct(data);
                 
             } catch (error) {
                 console.error('Error:', error);
-                if (loadingMessage) loadingMessage.remove();
-                
-                // Generate mock data for demo with animations
-                await generateMockResultsWithAnimation();
             } finally {
                 isGenerating = false;
                 generateBtn.disabled = false;
             }
         }
 
-        // Generate mock results with animation for demonstration
-        async function generateMockResultsWithAnimation() {
-            const mockData = {
+        async function processSLM(type, icon, outputs) {
+            const indicator = document.getElementById(`${type}Indicator`);
+            const status = document.getElementById(`${type}Status`);
+            const outputsContainer = document.getElementById(`${type}Outputs`);
+            
+            indicator.classList.add('active');
+            status.style.display = 'inline-block';
+            
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            outputsContainer.innerHTML = formatSLMOutputs(type, icon, outputs);
+            
+            await new Promise(resolve => setTimeout(resolve, 500));
+            
+            indicator.classList.remove('active');
+            indicator.classList.add('complete');
+            status.textContent = 'Complete';
+            status.classList.add('complete');
+        }
+
+        function getMockData() {
+            return {
                 name: `Vitruvian ${['Harmony', 'Flow', 'Aero', 'Sfumato'][Math.floor(Math.random() * 4)]} ${selectedPrompt.split(' ').slice(-1)[0]}`,
                 product_type: selectedPrompt,
                 target_market: ['Consumer Electronics', 'Industrial Equipment', 'Medical Devices', 'Sustainable Goods'][Math.floor(Math.random() * 4)],
                 innovation_score: Math.floor(Math.random() * 3) + 7,
                 feasibility_score: Math.floor(Math.random() * 3) + 7,
                 viability_score: (Math.random() * 0.3 + 0.7).toFixed(2),
-                total_slm_outputs: 8,
                 features: [
                     {
                         description: "Apply pyramidal law of force to enhance mechanical efficiency and durability",
-                        inspiration: "Pyramidal law of force: power diminishes towards its end || Source: Madrid I, 16r - Studies of spring mechanics",
+                        inspiration: "Pyramidal law of force: power diminishes towards its end",
                         stage: "PROTOTYPE",
-                        notes: "Prototype feasible with current technology; refine through user feedback and iteration"
+                        notes: "Prototype feasible with current technology"
                     },
                     {
                         description: "Incorporate proportional harmony based on the Vitruvian system for ergonomic design",
-                        inspiration: "Proportional harmony based on the Vitruvian system || Source: Venice Accademia - Proportional Study of a Man",
+                        inspiration: "Proportional harmony based on the Vitruvian system",
                         stage: "PRODUCTION_READY",
-                        notes: "Production-ready using established scalable manufacturing processes"
+                        notes: "Production-ready using established processes"
                     },
                     {
                         description: "Integrate sfumato technique for visual harmony and perceptual depth",
-                        inspiration: "Sfumato: do not make definite boundaries || Source: Ash.II, 14v - Treatise on Painting",
+                        inspiration: "Sfumato: do not make definite boundaries",
                         stage: "CONCEPT",
-                        notes: "Conceptual exploration; requires validation through modeling and testing"
-                    },
-                    {
-                        description: "Use water flow principles to guide efficient energy distribution",
-                        inspiration: "Water seeks the most efficient path || Source: Codex Leicester - Studies of water vortices",
-                        stage: "PROTOTYPE",
-                        notes: "Prototype feasible with current technology; refine through user feedback"
+                        notes: "Conceptual exploration requires validation"
                     }
                 ],
                 slm_outputs: {
                     mechanics: [
-                        "Apply pyramidal law of force to enhance mechanical efficiency || Pyramidal law of force: power diminishes towards its end || Source: Madrid I, 16r - Studies of spring mechanics",
-                        "Use water flow principles for efficient energy distribution || Water seeks the most efficient path; design channels to guide flow || Source: Codex Leicester - Studies of water vortices"
+                        "Apply pyramidal law of force to enhance mechanical efficiency || Pyramidal law of force: power diminishes towards its end || Source: Madrid I, 16r",
+                        "Use water flow principles for efficient energy distribution || Water seeks the most efficient path || Source: Codex Leicester"
                     ],
                     anatomy: [
-                        "Incorporate Vitruvian proportions for optimal ergonomics || Proportional harmony based on the Vitruvian system || Source: Venice Accademia - Proportional Study of a Man",
-                        "Apply layered system integration mimicking biological structures || Layered system integration (like muscle, tendon, bone) || Source: Anatomical drawings - Cross Sections of the Human Skull"
+                        "Incorporate Vitruvian proportions for optimal ergonomics || Proportional harmony based on the Vitruvian system || Source: Venice Accademia",
+                        "Apply layered system integration mimicking biological structures || Layered system integration || Source: Anatomical drawings"
                     ],
                     optics: [
-                        "Integrate sfumato gradients for perceptual depth || Sfumato: do not make definite boundaries || Source: Ash.II, 14v - Treatise on Painting",
-                        "Apply golden ratio for aesthetic harmony || Golden ratio in natural and man-made designs || Source: Paciolian influences - Divine Proportion"
+                        "Integrate sfumato gradients for perceptual depth || Sfumato: do not make definite boundaries || Source: Ash.II, 14v",
+                        "Apply golden ratio for aesthetic harmony || Golden ratio in natural designs || Source: Divine Proportion"
                     ]
                 }
             };
-            
-            // Step 1: Announce SLM activation
-            addAIMessage('<div style="margin-bottom: 1rem; color: var(--text-secondary);">Activating specialized Small Language Models (SLMs) based on da Vinci\'s knowledge domains...</div>');
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            
-            // Step 2: Mechanics & Physics SLM
-            let loadingMessage = addAIMessage('🔄 Activating Mechanics & Physics SLM...', true);
-            await new Promise(resolve => setTimeout(resolve, 1500));
-            loadingMessage.remove();
-            addAIMessage(formatSLMOutput('Mechanics & Physics SLM Output', '⚙', mockData.slm_outputs.mechanics, 'mechanics'));
-            await new Promise(resolve => setTimeout(resolve, 1200));
-            
-            // Step 3: Anatomy & Biology SLM
-            loadingMessage = addAIMessage('🔄 Activating Anatomy & Biology SLM...', true);
-            await new Promise(resolve => setTimeout(resolve, 1500));
-            loadingMessage.remove();
-            addAIMessage(formatSLMOutput('Anatomy & Biology SLM Output', '🦋', mockData.slm_outputs.anatomy, 'anatomy'));
-            await new Promise(resolve => setTimeout(resolve, 1200));
-            
-            // Step 4: Optics & Aesthetics SLM
-            loadingMessage = addAIMessage('🔄 Activating Optics & Aesthetics SLM...', true);
-            await new Promise(resolve => setTimeout(resolve, 1500));
-            loadingMessage.remove();
-            addAIMessage(formatSLMOutput('Optics & Aesthetics SLM Output', '👁', mockData.slm_outputs.optics, 'optics'));
-            await new Promise(resolve => setTimeout(resolve, 1500));
-            
-            // Step 5: Synthesis
-            loadingMessage = addAIMessage('⚡ Engaging Da Vinci Abstraction Organ for synthesis...', true);
-            await new Promise(resolve => setTimeout(resolve, 2000));
-            loadingMessage.remove();
-            
-            // Add synthesis animation
-            const synthesisAnimationContent = `
-                <div class="synthesis-animation">
-                    <div class="slm-node-container mechanics">
-                        <div class="slm-node">⚙</div>
-                        <div class="slm-node-label">Mechanics</div>
-                    </div>
-                    <div class="connection-line left"></div>
-                    <div class="slm-node-container anatomy">
-                        <div class="slm-node">🦋</div>
-                        <div class="slm-node-label">Anatomy</div>
-                    </div>
-                    <div class="connection-line right"></div>
-                    <div class="slm-node-container optics">
-                        <div class="slm-node">👁</div>
-                        <div class="slm-node-label">Optics</div>
-                    </div>
-                    <div class="synthesis-center">◈</div>
-                </div>
-                <div class="synthesis-text">
-                    <strong style="color: var(--primary-gold);">Synthesizing knowledge domains...</strong>
-                </div>
-            `;
-            
-            const animationMessage = addAIMessage(synthesisAnimationContent);
-            await new Promise(resolve => setTimeout(resolve, 2500));
-            animationMessage.remove();
-            
-            const synthesisContent = `
-                <div class="synthesis-section">
-                    <div class="synthesis-header">
-                        <div class="synthesis-icon">◈</div>
-                        <div class="synthesis-title">Da Vinci Abstraction Organ: Synthesis Complete</div>
-                    </div>
-                    <p style="color: var(--text-secondary); margin-bottom: 1rem;">
-                        Synthesizing outputs from the three SLMs into cohesive design features...
-                    </p>
-                    <div class="features-grid">
-                        ${formatFeatures(mockData.features)}
-                    </div>
-                </div>
-            `;
-            addAIMessage(synthesisContent);
-            await new Promise(resolve => setTimeout(resolve, 2000));
-            
-            // Step 6: Final product with dramatic pause
-            loadingMessage = addAIMessage('🎨 Generating final product design: <strong style="color: var(--primary-gold);">' + mockData.name + '</strong>...', true);
-            await new Promise(resolve => setTimeout(resolve, 2500));
-            loadingMessage.remove();
-            
-            addAIMessage(formatProductSummary(mockData));
         }
 
-        // Event listeners
         document.getElementById('generateBtn').addEventListener('click', generateDesign);
-
-        // Initialize on load
         initializeUI();
     </script>
 </body>
