@@ -855,28 +855,28 @@
             return aiMessage;
         }
 
-        // Format SLM outputs
+        // Format SLM outputs with proper source parsing
         function formatSLMOutput(title, icon, outputs, type) {
             let outputHtml = outputs.map((output, idx) => {
-                // Parse the output to extract description and inspiration
+                // Parse the output to extract description, inspiration, and source
                 let description = output;
                 let inspiration = '';
                 let source = '';
                 
-                // For the real API response, parse the structured data
-                if (typeof output === 'object') {
-                    description = output.description || output;
-                    if (output.inspiration) {
-                        const parts = output.inspiration.split('||');
-                        inspiration = parts[0] ? parts[0].trim() : '';
-                        source = parts[1] ? parts[1].replace('Source:', '').trim() : '';
+                // Parse the "||" separated format
+                if (output.includes('||')) {
+                    const parts = output.split('||').map(p => p.trim());
+                    description = parts[0];
+                    
+                    // The second part contains the full inspiration quote
+                    if (parts[1]) {
+                        inspiration = parts[1];
                     }
-                } else if (output.includes('||')) {
-                    const parts = output.split('||');
-                    description = parts[0].trim();
-                    const inspirationParts = parts[1] ? parts[1].split('Source:') : [];
-                    inspiration = inspirationParts[0] ? inspirationParts[0].trim() : '';
-                    source = inspirationParts[1] ? inspirationParts[1].trim() : '';
+                    
+                    // The third part contains the source
+                    if (parts[2]) {
+                        source = parts[2].replace('Source:', '').trim();
+                    }
                 }
                 
                 return `
@@ -884,7 +884,7 @@
                         <div class="slm-feature-desc">• ${description}</div>
                         ${inspiration ? `
                             <div class="slm-inspiration">
-                                <strong>Inspiration:</strong> ${inspiration}
+                                <strong>Inspiration:</strong> "${inspiration}"
                                 ${source ? `<br><span class="slm-source">Source: ${source}</span>` : ''}
                             </div>
                         ` : ''}
@@ -991,7 +991,7 @@
             `;
         }
 
-        // Generate design
+        // Generate design with sequential animations
         async function generateDesign() {
             if (!selectedPrompt || isGenerating) return;
             
@@ -1002,13 +1002,13 @@
             // Start conversation
             startConversation(selectedPrompt);
             
+            // Wait a bit for user message to settle
+            await new Promise(resolve => setTimeout(resolve, 500));
+            
             // Add initial AI response
-            const loadingMessage = addAIMessage('Consulting da Vinci\'s knowledge verticals...', true);
+            let loadingMessage = addAIMessage('Initializing Da Vinci knowledge synthesis system...', true);
             
             try {
-                // Simulate stages of processing
-                await new Promise(resolve => setTimeout(resolve, 1000));
-                
                 // Make API call
                 const response = await fetch(API_URL, {
                     method: 'POST',
@@ -1024,13 +1024,19 @@
 
                 const data = await response.json();
                 
-                // Remove loading message
+                // Remove initial loading message
+                await new Promise(resolve => setTimeout(resolve, 1500));
                 loadingMessage.remove();
                 
-                // Add SLM outputs
-                addAIMessage('<div style="margin-bottom: 1rem;">Running specialized Small Language Models (SLMs) based on da Vinci\'s knowledge domains...</div>');
+                // Step 1: Announce SLM activation
+                addAIMessage('<div style="margin-bottom: 1rem; color: var(--text-secondary);">Activating specialized Small Language Models (SLMs) based on da Vinci\'s knowledge domains...</div>');
+                await new Promise(resolve => setTimeout(resolve, 1000));
                 
-                // Mechanics & Physics SLM
+                // Step 2: Mechanics & Physics SLM with delay
+                loadingMessage = addAIMessage('🔄 Activating Mechanics & Physics SLM...', true);
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                loadingMessage.remove();
+                
                 if (data.slm_outputs && data.slm_outputs.mechanics) {
                     addAIMessage(formatSLMOutput(
                         'Mechanics & Physics SLM Output',
@@ -1039,8 +1045,13 @@
                         'mechanics'
                     ));
                 }
+                await new Promise(resolve => setTimeout(resolve, 1200));
                 
-                // Anatomy & Biology SLM
+                // Step 3: Anatomy & Biology SLM with delay
+                loadingMessage = addAIMessage('🔄 Activating Anatomy & Biology SLM...', true);
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                loadingMessage.remove();
+                
                 if (data.slm_outputs && data.slm_outputs.anatomy) {
                     addAIMessage(formatSLMOutput(
                         'Anatomy & Biology SLM Output',
@@ -1049,8 +1060,13 @@
                         'anatomy'
                     ));
                 }
+                await new Promise(resolve => setTimeout(resolve, 1200));
                 
-                // Optics & Aesthetics SLM
+                // Step 4: Optics & Aesthetics SLM with delay
+                loadingMessage = addAIMessage('🔄 Activating Optics & Aesthetics SLM...', true);
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                loadingMessage.remove();
+                
                 if (data.slm_outputs && data.slm_outputs.optics) {
                     addAIMessage(formatSLMOutput(
                         'Optics & Aesthetics SLM Output',
@@ -1059,16 +1075,21 @@
                         'optics'
                     ));
                 }
+                await new Promise(resolve => setTimeout(resolve, 1500));
                 
-                // Add synthesis section
+                // Step 5: Synthesis with animation
+                loadingMessage = addAIMessage('⚡ Engaging Da Vinci Abstraction Organ for synthesis...', true);
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                loadingMessage.remove();
+                
                 const synthesisContent = `
                     <div class="synthesis-section">
                         <div class="synthesis-header">
                             <div class="synthesis-icon">◈</div>
-                            <div class="synthesis-title">Da Vinci Abstraction Organ: Synthesis</div>
+                            <div class="synthesis-title">Da Vinci Abstraction Organ: Synthesis Complete</div>
                         </div>
                         <p style="color: var(--text-secondary); margin-bottom: 1rem;">
-                            Synthesizing outputs from the three SLMs into cohesive design features...
+                            Successfully synthesized ${data.features.length} cohesive design features from ${data.total_slm_outputs || 8} SLM insights
                         </p>
                         <div class="features-grid">
                             ${formatFeatures(data.features)}
@@ -1076,24 +1097,30 @@
                     </div>
                 `;
                 addAIMessage(synthesisContent);
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                // Step 6: Final product generation with dramatic pause
+                loadingMessage = addAIMessage('🎨 Generating final product design: <strong style="color: var(--primary-gold);">' + data.name + '</strong>...', true);
+                await new Promise(resolve => setTimeout(resolve, 2500));
+                loadingMessage.remove();
                 
                 // Add final product summary
                 addAIMessage(formatProductSummary(data));
                 
             } catch (error) {
                 console.error('Error:', error);
-                loadingMessage.remove();
+                if (loadingMessage) loadingMessage.remove();
                 
-                // Generate mock data for demo
-                generateMockResults();
+                // Generate mock data for demo with animations
+                await generateMockResultsWithAnimation();
             } finally {
                 isGenerating = false;
                 generateBtn.disabled = false;
             }
         }
 
-        // Generate mock results for demonstration
-        function generateMockResults() {
+        // Generate mock results with animation for demonstration
+        async function generateMockResultsWithAnimation() {
             const mockData = {
                 name: `Vitruvian ${['Harmony', 'Flow', 'Aero', 'Sfumato'][Math.floor(Math.random() * 4)]} ${selectedPrompt.split(' ').slice(-1)[0]}`,
                 product_type: selectedPrompt,
@@ -1101,28 +1128,29 @@
                 innovation_score: Math.floor(Math.random() * 3) + 7,
                 feasibility_score: Math.floor(Math.random() * 3) + 7,
                 viability_score: (Math.random() * 0.3 + 0.7).toFixed(2),
+                total_slm_outputs: 8,
                 features: [
                     {
                         description: "Apply pyramidal law of force to enhance mechanical efficiency and durability",
-                        inspiration: "Pyramidal law of force: power diminishes towards its end - Madrid I, 16r",
+                        inspiration: "Pyramidal law of force: power diminishes towards its end || Source: Madrid I, 16r - Studies of spring mechanics",
                         stage: "PROTOTYPE",
                         notes: "Prototype feasible with current technology; refine through user feedback and iteration"
                     },
                     {
                         description: "Incorporate proportional harmony based on the Vitruvian system for ergonomic design",
-                        inspiration: "Proportional harmony based on the Vitruvian system - Venice Accademia",
+                        inspiration: "Proportional harmony based on the Vitruvian system || Source: Venice Accademia - Proportional Study of a Man",
                         stage: "PRODUCTION_READY",
                         notes: "Production-ready using established scalable manufacturing processes"
                     },
                     {
                         description: "Integrate sfumato technique for visual harmony and perceptual depth",
-                        inspiration: "Sfumato: do not make definite boundaries - Treatise on Painting",
+                        inspiration: "Sfumato: do not make definite boundaries || Source: Ash.II, 14v - Treatise on Painting",
                         stage: "CONCEPT",
                         notes: "Conceptual exploration; requires validation through modeling and testing"
                     },
                     {
                         description: "Use water flow principles to guide efficient energy distribution",
-                        inspiration: "Water seeks the most efficient path - Codex Leicester",
+                        inspiration: "Water seeks the most efficient path || Source: Codex Leicester - Studies of water vortices",
                         stage: "PROTOTYPE",
                         notes: "Prototype feasible with current technology; refine through user feedback"
                     }
@@ -1133,8 +1161,8 @@
                         "Use water flow principles for efficient energy distribution || Water seeks the most efficient path; design channels to guide flow || Source: Codex Leicester - Studies of water vortices"
                     ],
                     anatomy: [
-                        "Incorporate Vitruvian proportions for optimal ergonomics || Proportional harmony based on the Vitruvian system || Source: Venice Accademia - Proportional Study",
-                        "Apply layered system integration mimicking biological structures || Layered system integration (like muscle, tendon, bone) || Source: Anatomical drawings - Cross Sections"
+                        "Incorporate Vitruvian proportions for optimal ergonomics || Proportional harmony based on the Vitruvian system || Source: Venice Accademia - Proportional Study of a Man",
+                        "Apply layered system integration mimicking biological structures || Layered system integration (like muscle, tendon, bone) || Source: Anatomical drawings - Cross Sections of the Human Skull"
                     ],
                     optics: [
                         "Integrate sfumato gradients for perceptual depth || Sfumato: do not make definite boundaries || Source: Ash.II, 14v - Treatise on Painting",
@@ -1143,23 +1171,44 @@
                 }
             };
             
-            // Add SLM outputs
-            addAIMessage('<div style="margin-bottom: 1rem;">Running specialized Small Language Models (SLMs) based on da Vinci\'s knowledge domains...</div>');
+            // Step 1: Announce SLM activation
+            addAIMessage('<div style="margin-bottom: 1rem; color: var(--text-secondary);">Activating specialized Small Language Models (SLMs) based on da Vinci\'s knowledge domains...</div>');
+            await new Promise(resolve => setTimeout(resolve, 1000));
             
-            // Add each SLM output
+            // Step 2: Mechanics & Physics SLM
+            let loadingMessage = addAIMessage('🔄 Activating Mechanics & Physics SLM...', true);
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            loadingMessage.remove();
             addAIMessage(formatSLMOutput('Mechanics & Physics SLM Output', '⚙', mockData.slm_outputs.mechanics, 'mechanics'));
-            addAIMessage(formatSLMOutput('Anatomy & Biology SLM Output', '🦋', mockData.slm_outputs.anatomy, 'anatomy'));
-            addAIMessage(formatSLMOutput('Optics & Aesthetics SLM Output', '👁', mockData.slm_outputs.optics, 'optics'));
+            await new Promise(resolve => setTimeout(resolve, 1200));
             
-            // Add synthesis
+            // Step 3: Anatomy & Biology SLM
+            loadingMessage = addAIMessage('🔄 Activating Anatomy & Biology SLM...', true);
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            loadingMessage.remove();
+            addAIMessage(formatSLMOutput('Anatomy & Biology SLM Output', '🦋', mockData.slm_outputs.anatomy, 'anatomy'));
+            await new Promise(resolve => setTimeout(resolve, 1200));
+            
+            // Step 4: Optics & Aesthetics SLM
+            loadingMessage = addAIMessage('🔄 Activating Optics & Aesthetics SLM...', true);
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            loadingMessage.remove();
+            addAIMessage(formatSLMOutput('Optics & Aesthetics SLM Output', '👁', mockData.slm_outputs.optics, 'optics'));
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            
+            // Step 5: Synthesis
+            loadingMessage = addAIMessage('⚡ Engaging Da Vinci Abstraction Organ for synthesis...', true);
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            loadingMessage.remove();
+            
             const synthesisContent = `
                 <div class="synthesis-section">
                     <div class="synthesis-header">
                         <div class="synthesis-icon">◈</div>
-                        <div class="synthesis-title">Da Vinci Abstraction Organ: Synthesis</div>
+                        <div class="synthesis-title">Da Vinci Abstraction Organ: Synthesis Complete</div>
                     </div>
                     <p style="color: var(--text-secondary); margin-bottom: 1rem;">
-                        Synthesizing outputs from the three SLMs into cohesive design features...
+                        Successfully synthesized ${mockData.features.length} cohesive design features from ${mockData.total_slm_outputs} SLM insights
                     </p>
                     <div class="features-grid">
                         ${formatFeatures(mockData.features)}
@@ -1167,8 +1216,13 @@
                 </div>
             `;
             addAIMessage(synthesisContent);
+            await new Promise(resolve => setTimeout(resolve, 2000));
             
-            // Add final product
+            // Step 6: Final product with dramatic pause
+            loadingMessage = addAIMessage('🎨 Generating final product design: <strong style="color: var(--primary-gold);">' + mockData.name + '</strong>...', true);
+            await new Promise(resolve => setTimeout(resolve, 2500));
+            loadingMessage.remove();
+            
             addAIMessage(formatProductSummary(mockData));
         }
 
