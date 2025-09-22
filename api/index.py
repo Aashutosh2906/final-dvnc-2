@@ -237,7 +237,7 @@ class handler(BaseHTTPRequestHandler):
                 # Generate candidate
                 candidate = generate_design_candidate(product_type, features)
                 
-                # Format response
+                # Format response with FULL details
                 response = {
                     'name': candidate.name,
                     'product_type': candidate.product_type,
@@ -245,20 +245,24 @@ class handler(BaseHTTPRequestHandler):
                     'innovation_score': candidate.innovation_score,
                     'feasibility_score': candidate.feasibility_score,
                     'viability_score': round(candidate.viability_score, 2),
+                    'core_innovation': candidate.core_innovation,
+                    'da_vinci_principles': candidate.da_vinci_principles,
                     'features': [
                         {
                             'description': f.description,
-                            'inspiration': f.inspiration.split('||')[0].strip(),
+                            'inspiration': f.inspiration,  # Keep FULL inspiration with source
                             'stage': f.development_stage.name,
                             'notes': f.engineering_notes
                         }
                         for f in candidate.features
                     ],
                     'slm_outputs': {
-                        'mechanics': [desc for desc, _ in slm1_output],
-                        'anatomy': [desc for desc, _ in slm2_output],
-                        'optics': [desc for desc, _ in slm3_output]
-                    }
+                        'mechanics': [f"{desc} || {insp}" for desc, insp in slm1_output],  # Include full output
+                        'anatomy': [f"{desc} || {insp}" for desc, insp in slm2_output],
+                        'optics': [f"{desc} || {insp}" for desc, insp in slm3_output]
+                    },
+                    'synthesis_count': len(candidate.features),
+                    'total_slm_outputs': len(slm1_output) + len(slm2_output) + len(slm3_output)
                 }
                 
                 self.send_response(200)
