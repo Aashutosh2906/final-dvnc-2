@@ -13,13 +13,19 @@
 
         :root {
             --primary-gold: #D4AF37;
-            --dark-bg: #0F0F0F;
+            --dark-bg: #0A0A0A;
+            --chat-bg: #141414;
             --card-bg: #1A1A1A;
             --text-primary: #FFFFFF;
             --text-secondary: #B0B0B0;
             --accent-blue: #4A90E2;
             --success-green: #52C41A;
-            --border-color: #333333;
+            --border-color: #2A2A2A;
+            --message-user: #1E1E1E;
+            --message-ai: #161616;
+            --concept-color: #7C3AED;
+            --prototype-color: #F59E0B;
+            --production-color: #10B981;
         }
 
         body {
@@ -30,7 +36,7 @@
             overflow-x: hidden;
         }
 
-        /* Renaissance-inspired background pattern */
+        /* Renaissance pattern overlay */
         body::before {
             content: '';
             position: fixed;
@@ -39,105 +45,123 @@
             right: 0;
             bottom: 0;
             background-image: 
-                radial-gradient(circle at 20% 80%, rgba(212, 175, 55, 0.05) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(74, 144, 226, 0.05) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(212, 175, 55, 0.03) 0%, transparent 50%);
+                radial-gradient(circle at 20% 80%, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(74, 144, 226, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.02) 0%, transparent 70%);
             pointer-events: none;
             z-index: 0;
         }
 
-        .container {
-            max-width: 1400px;
+        .app-container {
+            max-width: 1600px;
             margin: 0 auto;
-            padding: 2rem;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
             position: relative;
             z-index: 1;
         }
 
+        /* Header */
         header {
-            text-align: center;
-            margin-bottom: 3rem;
-            animation: fadeInDown 0.8s ease;
+            background: linear-gradient(180deg, rgba(20,20,20,0.95) 0%, rgba(20,20,20,0.8) 100%);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.5rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
-        .logo {
-            display: inline-block;
-            margin-bottom: 1rem;
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary-gold), #FFD700);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: var(--dark-bg);
         }
 
         .logo-text {
-            font-size: 3rem;
+            font-size: 1.5rem;
             font-weight: 700;
             background: linear-gradient(135deg, var(--primary-gold), #FFD700);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            letter-spacing: 0.05em;
-            position: relative;
         }
 
         .tagline {
             color: var(--text-secondary);
-            font-size: 1.1rem;
+            font-size: 0.9rem;
             font-style: italic;
-            margin-top: 0.5rem;
         }
 
-        .main-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            margin-bottom: 2rem;
+        /* Main Layout */
+        .main-layout {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
         }
 
-        @media (max-width: 1024px) {
-            .main-content {
-                grid-template-columns: 1fr;
-            }
+        /* Sidebar */
+        .sidebar {
+            width: 350px;
+            background: var(--chat-bg);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
         }
 
-        .input-section, .output-section {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 2rem;
-            backdrop-filter: blur(10px);
-            animation: fadeIn 0.8s ease;
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
         }
 
-        .section-title {
-            font-size: 1.5rem;
-            margin-bottom: 1.5rem;
+        .sidebar-title {
+            font-size: 1.1rem;
             color: var(--primary-gold);
+            margin-bottom: 0.5rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
 
-        .section-title::before {
+        .sidebar-title::before {
             content: '◈';
-            font-size: 1.2rem;
+            font-size: 1rem;
         }
 
-        .prompt-grid {
-            display: grid;
-            gap: 0.75rem;
-            margin-bottom: 1.5rem;
+        .prompt-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
         }
 
-        .prompt-option {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            border-radius: 8px;
-            padding: 0.75rem 1rem;
+        .prompt-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-size: 0.95rem;
             position: relative;
             overflow: hidden;
         }
 
-        .prompt-option::before {
+        .prompt-item::before {
             content: '';
             position: absolute;
             top: 0;
@@ -148,48 +172,40 @@
             transition: left 0.5s ease;
         }
 
-        .prompt-option:hover {
-            background: rgba(212, 175, 55, 0.1);
-            border-color: var(--primary-gold);
-            transform: translateX(5px);
+        .prompt-item:hover {
+            background: rgba(212, 175, 55, 0.05);
+            border-color: rgba(212, 175, 55, 0.5);
+            transform: translateX(3px);
         }
 
-        .prompt-option:hover::before {
+        .prompt-item:hover::before {
             left: 100%;
         }
 
-        .prompt-option.selected {
-            background: rgba(212, 175, 55, 0.2);
+        .prompt-item.selected {
+            background: rgba(212, 175, 55, 0.1);
             border-color: var(--primary-gold);
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
         }
 
-        .custom-input {
-            width: 100%;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 1rem;
-            color: var(--text-primary);
-            font-size: 1rem;
-            margin-bottom: 1rem;
-            transition: all 0.3s ease;
+        .prompt-text {
+            font-size: 0.95rem;
+            line-height: 1.4;
         }
 
-        .custom-input:focus {
-            outline: none;
-            border-color: var(--primary-gold);
-            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        .generate-section {
+            padding: 1.5rem;
+            border-top: 1px solid var(--border-color);
         }
 
         .generate-btn {
             width: 100%;
-            padding: 1rem 2rem;
+            padding: 1rem;
             background: linear-gradient(135deg, var(--primary-gold), #FFD700);
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             color: var(--dark-bg);
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -197,27 +213,19 @@
             overflow: hidden;
         }
 
-        .generate-btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.5);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
+        .generate-btn::after {
+            content: '→';
+            margin-left: 0.5rem;
+            transition: transform 0.3s ease;
         }
 
         .generate-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
         }
 
-        .generate-btn:active::before {
-            width: 300px;
-            height: 300px;
+        .generate-btn:hover::after {
+            transform: translateX(5px);
         }
 
         .generate-btn:disabled {
@@ -225,176 +233,29 @@
             cursor: not-allowed;
         }
 
-        .loading {
-            display: none;
-            text-align: center;
-            padding: 2rem;
-        }
-
-        .loading.active {
-            display: block;
-        }
-
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 3px solid rgba(212, 175, 55, 0.3);
-            border-top-color: var(--primary-gold);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 1rem;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .result-container {
-            display: none;
-            animation: fadeIn 0.8s ease;
-        }
-
-        .result-container.active {
-            display: block;
-        }
-
-        .result-header {
-            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(74, 144, 226, 0.1));
-            border: 1px solid var(--primary-gold);
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .result-title {
-            font-size: 1.3rem;
-            color: var(--primary-gold);
-            margin-bottom: 0.5rem;
-        }
-
-        .result-meta {
-            display: flex;
-            gap: 2rem;
-            flex-wrap: wrap;
-            margin-top: 1rem;
-        }
-
-        .meta-item {
+        /* Chat Area */
+        .chat-area {
+            flex: 1;
             display: flex;
             flex-direction: column;
-            gap: 0.25rem;
+            background: var(--dark-bg);
         }
 
-        .meta-label {
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+        .chat-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
         }
 
-        .meta-value {
-            font-size: 1.1rem;
-            font-weight: 600;
+        /* Chat Messages */
+        .message {
+            animation: messageSlide 0.5s ease;
         }
 
-        .score-bar {
-            width: 100px;
-            height: 6px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 3px;
-            overflow: hidden;
-            margin-top: 0.25rem;
-        }
-
-        .score-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary-gold), #FFD700);
-            transition: width 1s ease;
-        }
-
-        .features-list {
-            margin-top: 1.5rem;
-        }
-
-        .feature-item {
-            background: rgba(255, 255, 255, 0.05);
-            border-left: 3px solid var(--primary-gold);
-            border-radius: 4px;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .feature-item:hover {
-            background: rgba(255, 255, 255, 0.08);
-            transform: translateX(5px);
-        }
-
-        .feature-description {
-            margin-bottom: 0.5rem;
-            line-height: 1.5;
-        }
-
-        .feature-meta {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            font-style: italic;
-        }
-
-        .stage-badge {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            margin-left: 0.5rem;
-            text-transform: uppercase;
-        }
-
-        .stage-concept {
-            background: rgba(74, 144, 226, 0.2);
-            color: var(--accent-blue);
-        }
-
-        .stage-prototype {
-            background: rgba(212, 175, 55, 0.2);
-            color: var(--primary-gold);
-        }
-
-        .stage-production {
-            background: rgba(82, 196, 26, 0.2);
-            color: var(--success-green);
-        }
-
-        .slm-outputs {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-
-        .slm-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 1rem;
-        }
-
-        .slm-title {
-            color: var(--primary-gold);
-            font-size: 1rem;
-            margin-bottom: 0.75rem;
-            font-weight: 600;
-        }
-
-        .slm-insight {
-            font-size: 0.9rem;
-            line-height: 1.4;
-            color: var(--text-secondary);
-            margin-bottom: 0.5rem;
-        }
-
-        @keyframes fadeIn {
+        @keyframes messageSlide {
             from {
                 opacity: 0;
                 transform: translateY(20px);
@@ -405,78 +266,505 @@
             }
         }
 
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .message-user {
+            display: flex;
+            justify-content: flex-end;
         }
 
-        .error-message {
-            background: rgba(255, 0, 0, 0.1);
-            border: 1px solid rgba(255, 0, 0, 0.3);
-            border-radius: 8px;
-            padding: 1rem;
-            color: #ff6b6b;
+        .message-user .message-content {
+            background: var(--message-user);
+            border: 1px solid var(--border-color);
+            border-radius: 15px 15px 5px 15px;
+            padding: 1rem 1.5rem;
+            max-width: 70%;
+        }
+
+        .message-ai {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .ai-avatar {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--primary-gold), #FFD700);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-weight: bold;
+            color: var(--dark-bg);
+            font-size: 0.9rem;
+        }
+
+        .message-ai .message-content {
+            background: var(--message-ai);
+            border: 1px solid var(--border-color);
+            border-radius: 5px 15px 15px 15px;
+            padding: 1.5rem;
+            flex: 1;
+            max-width: 90%;
+        }
+
+        /* SLM Output Sections */
+        .slm-section {
+            margin-top: 1.5rem;
+        }
+
+        .slm-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
             margin-bottom: 1rem;
-            display: none;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
         }
 
-        .error-message.active {
-            display: block;
+        .slm-icon {
+            width: 32px;
+            height: 32px;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-gold);
+            font-size: 1.1rem;
+        }
+
+        .slm-title {
+            font-size: 1.1rem;
+            color: var(--primary-gold);
+            font-weight: 600;
+        }
+
+        .slm-output-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .slm-output-item {
+            background: rgba(212, 175, 55, 0.03);
+            border-left: 3px solid var(--primary-gold);
+            border-radius: 0 8px 8px 0;
+            padding: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .slm-output-item:hover {
+            background: rgba(212, 175, 55, 0.05);
+            transform: translateX(5px);
+        }
+
+        .slm-feature-desc {
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            line-height: 1.5;
+        }
+
+        .slm-inspiration {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-style: italic;
+            padding-left: 1rem;
+            border-left: 2px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .slm-source {
+            color: rgba(212, 175, 55, 0.8);
+            font-weight: 500;
+        }
+
+        /* Synthesis Section */
+        .synthesis-section {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.05), rgba(74, 144, 226, 0.05));
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 12px;
+        }
+
+        .synthesis-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .synthesis-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary-gold), #FFD700);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dark-bg);
+            font-size: 1.3rem;
+        }
+
+        .synthesis-title {
+            font-size: 1.3rem;
+            color: var(--primary-gold);
+            font-weight: 700;
+        }
+
+        /* Feature Cards */
+        .features-grid {
+            display: grid;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1.25rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .feature-number {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 28px;
+            height: 28px;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-gold);
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .feature-description {
+            color: var(--text-primary);
+            line-height: 1.5;
+            margin-bottom: 1rem;
+            padding-right: 3rem;
+        }
+
+        .feature-inspiration {
+            background: rgba(255, 255, 255, 0.03);
+            border-left: 2px solid rgba(212, 175, 55, 0.4);
+            padding: 0.75rem;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        .feature-metadata {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .development-stage {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.35rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .stage-concept {
+            background: rgba(124, 58, 237, 0.15);
+            color: var(--concept-color);
+            border: 1px solid rgba(124, 58, 237, 0.3);
+        }
+
+        .stage-prototype {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--prototype-color);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .stage-production {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--production-color);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .engineering-notes {
+            flex: 1;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        /* Final Product Section */
+        .product-summary {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: var(--card-bg);
+            border: 1px solid var(--primary-gold);
+            border-radius: 12px;
+        }
+
+        .product-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .product-name {
+            font-size: 1.5rem;
+            color: var(--primary-gold);
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .product-market {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        .scores-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .score-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .score-label {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .score-value-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .score-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-gold);
+        }
+
+        .score-bar {
+            flex: 1;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .score-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-gold), #FFD700);
+            transition: width 1.5s ease;
+            border-radius: 4px;
+        }
+
+        .product-description {
+            padding: 1.5rem;
+            background: rgba(212, 175, 55, 0.03);
+            border-left: 3px solid var(--primary-gold);
+            border-radius: 0 8px 8px 0;
+            line-height: 1.7;
+            color: var(--text-primary);
+        }
+
+        .principles-list {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .principle-tag {
+            padding: 0.35rem 0.75rem;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--primary-gold);
+        }
+
+        /* Loading Animation */
+        .loading-indicator {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(212, 175, 55, 0.05);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 10px;
+            margin: 1rem 0;
+        }
+
+        .spinner {
+            width: 30px;
+            height: 30px;
+            border: 3px solid rgba(212, 175, 55, 0.3);
+            border-top-color: var(--primary-gold);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        /* Welcome State */
+        .welcome-state {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem;
+            text-align: center;
+        }
+
+        .welcome-icon {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--primary-gold), #FFD700);
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--dark-bg);
+            margin-bottom: 2rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .welcome-title {
+            font-size: 2rem;
+            color: var(--primary-gold);
+            margin-bottom: 1rem;
+        }
+
+        .welcome-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            max-width: 600px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            
+            .chat-area {
+                width: 100%;
+            }
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(212, 175, 55, 0.3);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(212, 175, 55, 0.5);
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="app-container">
         <header>
-            <div class="logo">
-                <div class="logo-text">DVNC.AI</div>
+            <div class="logo-section">
+                <div class="logo-icon">DV</div>
+                <div>
+                    <div class="logo-text">DVNC.AI</div>
+                    <div class="tagline">Da Vinci-Inspired Product Design System</div>
+                </div>
             </div>
-            <div class="tagline">Da Vinci-Inspired Product Design System</div>
-            <p style="color: var(--text-secondary); margin-top: 1rem; max-width: 800px; margin-left: auto; margin-right: auto;">
-                Harnessing Renaissance polymathic genius through AI to transform abstract principles into tangible, market-ready innovations
-            </p>
         </header>
 
-        <div class="main-content">
-            <div class="input-section">
-                <h2 class="section-title">Select Design Prompt</h2>
-                <div class="prompt-grid" id="promptGrid">
+        <div class="main-layout">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <div class="sidebar-title">Design Prompts</div>
+                    <p style="color: var(--text-secondary); font-size: 0.85rem;">Select a prompt to begin the design synthesis</p>
+                </div>
+                
+                <div class="prompt-list" id="promptList">
                     <!-- Prompts will be populated here -->
                 </div>
-                <input type="text" class="custom-input" id="selectedPrompt" readonly placeholder="Selected prompt will appear here">
-                <button class="generate-btn" id="generateBtn">Generate Da Vinci-Inspired Design</button>
-                <div class="error-message" id="errorMessage"></div>
-            </div>
 
-            <div class="output-section">
-                <h2 class="section-title">Design Synthesis</h2>
-                <div class="loading" id="loading">
-                    <div class="spinner"></div>
-                    <p>Consulting da Vinci's knowledge verticals...</p>
-                    <p style="margin-top: 0.5rem; color: var(--text-secondary); font-size: 0.9rem;">
-                        Synthesizing mechanics, anatomy, and optics insights...
-                    </p>
-                </div>
-                <div class="result-container" id="resultContainer">
-                    <!-- Results will be populated here -->
+                <div class="generate-section">
+                    <button class="generate-btn" id="generateBtn" disabled>
+                        Generate Da Vinci Design
+                    </button>
                 </div>
             </div>
-        </div>
 
-        <div class="slm-outputs" id="slmOutputs" style="display: none;">
-            <!-- SLM outputs will be shown here -->
+            <!-- Chat Area -->
+            <div class="chat-area">
+                <div class="chat-container" id="chatContainer">
+                    <!-- Welcome State -->
+                    <div class="welcome-state" id="welcomeState">
+                        <div class="welcome-icon">◈</div>
+                        <div class="welcome-title">Welcome to DVNC.AI</div>
+                        <div class="welcome-subtitle">
+                            Select a design prompt from the left panel to begin the polymathic synthesis process. 
+                            I'll channel da Vinci's knowledge verticals—mechanics, anatomy, and optics—to generate 
+                            innovative, market-ready product designs.
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
         // Configuration
-        const API_URL = '/api/generate'; // Update this with your backend URL when deployed
+        const API_URL = '/api/generate';
         
         const prompts = [
             "a next-generation ergonomic computer mouse",
@@ -492,56 +780,236 @@
         ];
 
         let selectedPrompt = '';
+        let isGenerating = false;
 
         // Initialize UI
         function initializeUI() {
-            const promptGrid = document.getElementById('promptGrid');
+            const promptList = document.getElementById('promptList');
             
             prompts.forEach((prompt, index) => {
-                const promptOption = document.createElement('div');
-                promptOption.className = 'prompt-option';
-                promptOption.textContent = prompt;
-                promptOption.dataset.prompt = prompt;
-                promptOption.onclick = () => selectPrompt(prompt, promptOption);
-                promptGrid.appendChild(promptOption);
+                const promptItem = document.createElement('div');
+                promptItem.className = 'prompt-item';
+                promptItem.dataset.prompt = prompt;
+                promptItem.innerHTML = `<div class="prompt-text">${prompt}</div>`;
+                promptItem.onclick = () => selectPrompt(prompt, promptItem);
+                promptList.appendChild(promptItem);
             });
         }
 
         // Select prompt
         function selectPrompt(prompt, element) {
-            // Clear previous selection
-            document.querySelectorAll('.prompt-option').forEach(opt => {
-                opt.classList.remove('selected');
+            if (isGenerating) return;
+            
+            document.querySelectorAll('.prompt-item').forEach(item => {
+                item.classList.remove('selected');
             });
             
-            // Set new selection
             element.classList.add('selected');
             selectedPrompt = prompt;
-            document.getElementById('selectedPrompt').value = prompt;
-            document.getElementById('errorMessage').classList.remove('active');
+            document.getElementById('generateBtn').disabled = false;
+        }
+
+        // Clear chat and add user message
+        function startConversation(prompt) {
+            const chatContainer = document.getElementById('chatContainer');
+            const welcomeState = document.getElementById('welcomeState');
+            
+            if (welcomeState) {
+                welcomeState.remove();
+            }
+            
+            chatContainer.innerHTML = '';
+            
+            // Add user message
+            const userMessage = document.createElement('div');
+            userMessage.className = 'message message-user';
+            userMessage.innerHTML = `
+                <div class="message-content">
+                    Design ${prompt}
+                </div>
+            `;
+            chatContainer.appendChild(userMessage);
+        }
+
+        // Add AI message with typing indicator
+        function addAIMessage(content, isLoading = false) {
+            const chatContainer = document.getElementById('chatContainer');
+            
+            const aiMessage = document.createElement('div');
+            aiMessage.className = 'message message-ai';
+            aiMessage.innerHTML = `
+                <div class="ai-avatar">DV</div>
+                <div class="message-content">
+                    ${isLoading ? `
+                        <div class="loading-indicator">
+                            <div class="spinner"></div>
+                            <div class="loading-text">${content}</div>
+                        </div>
+                    ` : content}
+                </div>
+            `;
+            
+            chatContainer.appendChild(aiMessage);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+            
+            return aiMessage;
+        }
+
+        // Format SLM outputs
+        function formatSLMOutput(title, icon, outputs, type) {
+            let outputHtml = outputs.map((output, idx) => {
+                // Parse the output to extract description and inspiration
+                let description = output;
+                let inspiration = '';
+                let source = '';
+                
+                // For the real API response, parse the structured data
+                if (typeof output === 'object') {
+                    description = output.description || output;
+                    if (output.inspiration) {
+                        const parts = output.inspiration.split('||');
+                        inspiration = parts[0] ? parts[0].trim() : '';
+                        source = parts[1] ? parts[1].replace('Source:', '').trim() : '';
+                    }
+                } else if (output.includes('||')) {
+                    const parts = output.split('||');
+                    description = parts[0].trim();
+                    const inspirationParts = parts[1] ? parts[1].split('Source:') : [];
+                    inspiration = inspirationParts[0] ? inspirationParts[0].trim() : '';
+                    source = inspirationParts[1] ? inspirationParts[1].trim() : '';
+                }
+                
+                return `
+                    <div class="slm-output-item">
+                        <div class="slm-feature-desc">• ${description}</div>
+                        ${inspiration ? `
+                            <div class="slm-inspiration">
+                                <strong>Inspiration:</strong> ${inspiration}
+                                ${source ? `<br><span class="slm-source">Source: ${source}</span>` : ''}
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
+            
+            return `
+                <div class="slm-section">
+                    <div class="slm-header">
+                        <div class="slm-icon">${icon}</div>
+                        <div class="slm-title">${title}</div>
+                    </div>
+                    <div class="slm-output-list">
+                        ${outputHtml}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Format synthesized features
+        function formatFeatures(features) {
+            return features.map((feature, idx) => `
+                <div class="feature-card">
+                    <div class="feature-number">${idx + 1}</div>
+                    <div class="feature-description">${feature.description}</div>
+                    <div class="feature-inspiration">
+                        <strong>Inspiration:</strong> ${feature.inspiration}
+                    </div>
+                    <div class="feature-metadata">
+                        <div class="development-stage stage-${feature.stage.toLowerCase().replace('_', '-')}">
+                            ${feature.stage.replace('_', ' ')}
+                        </div>
+                        <div class="engineering-notes">
+                            ${feature.notes}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Format final product summary
+        function formatProductSummary(data) {
+            return `
+                <div class="product-summary">
+                    <div class="product-header">
+                        <div class="product-name">${data.name}</div>
+                        <div class="product-market">Target Market: ${data.target_market}</div>
+                    </div>
+                    
+                    <div class="scores-grid">
+                        <div class="score-item">
+                            <div class="score-label">Innovation Score</div>
+                            <div class="score-value-container">
+                                <div class="score-value">${data.innovation_score}/10</div>
+                                <div class="score-bar">
+                                    <div class="score-fill" style="width: ${data.innovation_score * 10}%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="score-item">
+                            <div class="score-label">Feasibility Score</div>
+                            <div class="score-value-container">
+                                <div class="score-value">${data.feasibility_score}/10</div>
+                                <div class="score-bar">
+                                    <div class="score-fill" style="width: ${data.feasibility_score * 10}%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="score-item">
+                            <div class="score-label">Market Viability</div>
+                            <div class="score-value-container">
+                                <div class="score-value">${data.viability_score}</div>
+                                <div class="score-bar">
+                                    <div class="score-fill" style="width: ${data.viability_score * 100}%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="product-description">
+                        <strong>Finished Product Description:</strong><br><br>
+                        The ${data.name} revolutionizes the ${data.product_type} category for ${data.target_market} users.
+                        Drawing from da Vinci's genius, it seamlessly blends mechanical precision, biological inspiration, and aesthetic elegance.
+                        
+                        ${data.features.map(feat => `
+                            <br><br>It incorporates ${feat.description.toLowerCase()}, inspired by "${feat.inspiration}", 
+                            currently at ${feat.stage.toLowerCase().replace('_', ' ')} stage (${feat.notes.toLowerCase()}).
+                        `).join('')}
+                        
+                        <br><br>This design not only scores ${data.innovation_score}/10 in innovation but also ${data.feasibility_score}/10 
+                        in feasibility, yielding a strong market viability of ${data.viability_score}. 
+                        
+                        <br><br>Imagine a product that feels like an extension of nature itself—durable, intuitive, and beautifully 
+                        crafted for everyday use, embodying the Renaissance ideal of perfect harmony between form and function.
+                    </div>
+                    
+                    <div class="principles-list">
+                        <div class="principle-tag">Mechanics & Physics</div>
+                        <div class="principle-tag">Anatomy & Biology</div>
+                        <div class="principle-tag">Optics & Aesthetics</div>
+                    </div>
+                </div>
+            `;
         }
 
         // Generate design
         async function generateDesign() {
-            if (!selectedPrompt) {
-                showError('Please select a design prompt first');
-                return;
-            }
-
-            const generateBtn = document.getElementById('generateBtn');
-            const loading = document.getElementById('loading');
-            const resultContainer = document.getElementById('resultContainer');
-            const errorMessage = document.getElementById('errorMessage');
+            if (!selectedPrompt || isGenerating) return;
             
-            // Reset and show loading
+            isGenerating = true;
+            const generateBtn = document.getElementById('generateBtn');
             generateBtn.disabled = true;
-            loading.classList.add('active');
-            resultContainer.classList.remove('active');
-            errorMessage.classList.remove('active');
-            document.getElementById('slmOutputs').style.display = 'none';
-
+            
+            // Start conversation
+            startConversation(selectedPrompt);
+            
+            // Add initial AI response
+            const loadingMessage = addAIMessage('Consulting da Vinci\'s knowledge verticals...', true);
+            
             try {
-                // Simulate API call (replace with actual backend call)
+                // Simulate stages of processing
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                // Make API call
                 const response = await fetch(API_URL, {
                     method: 'POST',
                     headers: {
@@ -555,15 +1023,72 @@
                 }
 
                 const data = await response.json();
-                displayResults(data);
+                
+                // Remove loading message
+                loadingMessage.remove();
+                
+                // Add SLM outputs
+                addAIMessage('<div style="margin-bottom: 1rem;">Running specialized Small Language Models (SLMs) based on da Vinci\'s knowledge domains...</div>');
+                
+                // Mechanics & Physics SLM
+                if (data.slm_outputs && data.slm_outputs.mechanics) {
+                    addAIMessage(formatSLMOutput(
+                        'Mechanics & Physics SLM Output',
+                        '⚙',
+                        data.slm_outputs.mechanics,
+                        'mechanics'
+                    ));
+                }
+                
+                // Anatomy & Biology SLM
+                if (data.slm_outputs && data.slm_outputs.anatomy) {
+                    addAIMessage(formatSLMOutput(
+                        'Anatomy & Biology SLM Output',
+                        '🦋',
+                        data.slm_outputs.anatomy,
+                        'anatomy'
+                    ));
+                }
+                
+                // Optics & Aesthetics SLM
+                if (data.slm_outputs && data.slm_outputs.optics) {
+                    addAIMessage(formatSLMOutput(
+                        'Optics & Aesthetics SLM Output',
+                        '👁',
+                        data.slm_outputs.optics,
+                        'optics'
+                    ));
+                }
+                
+                // Add synthesis section
+                const synthesisContent = `
+                    <div class="synthesis-section">
+                        <div class="synthesis-header">
+                            <div class="synthesis-icon">◈</div>
+                            <div class="synthesis-title">Da Vinci Abstraction Organ: Synthesis</div>
+                        </div>
+                        <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                            Synthesizing outputs from the three SLMs into cohesive design features...
+                        </p>
+                        <div class="features-grid">
+                            ${formatFeatures(data.features)}
+                        </div>
+                    </div>
+                `;
+                addAIMessage(synthesisContent);
+                
+                // Add final product summary
+                addAIMessage(formatProductSummary(data));
                 
             } catch (error) {
                 console.error('Error:', error);
-                // For demo purposes, generate mock data
+                loadingMessage.remove();
+                
+                // Generate mock data for demo
                 generateMockResults();
             } finally {
+                isGenerating = false;
                 generateBtn.disabled = false;
-                loading.classList.remove('active');
             }
         }
 
@@ -578,129 +1103,73 @@
                 viability_score: (Math.random() * 0.3 + 0.7).toFixed(2),
                 features: [
                     {
-                        description: "Apply pyramidal law of force for enhanced mechanical efficiency",
-                        inspiration: "Madrid I, 16r - Studies of spring mechanics",
+                        description: "Apply pyramidal law of force to enhance mechanical efficiency and durability",
+                        inspiration: "Pyramidal law of force: power diminishes towards its end - Madrid I, 16r",
                         stage: "PROTOTYPE",
-                        notes: "Prototype feasible with current technology"
+                        notes: "Prototype feasible with current technology; refine through user feedback and iteration"
                     },
                     {
-                        description: "Incorporate proportional harmony for biomimetic ergonomics",
-                        inspiration: "Venice Accademia - Proportional Study",
+                        description: "Incorporate proportional harmony based on the Vitruvian system for ergonomic design",
+                        inspiration: "Proportional harmony based on the Vitruvian system - Venice Accademia",
                         stage: "PRODUCTION_READY",
-                        notes: "Production-ready using established processes"
+                        notes: "Production-ready using established scalable manufacturing processes"
                     },
                     {
-                        description: "Integrate sfumato technique for visual harmony",
-                        inspiration: "Treatise on Painting - Shadow studies",
+                        description: "Integrate sfumato technique for visual harmony and perceptual depth",
+                        inspiration: "Sfumato: do not make definite boundaries - Treatise on Painting",
                         stage: "CONCEPT",
-                        notes: "Conceptual exploration required"
+                        notes: "Conceptual exploration; requires validation through modeling and testing"
+                    },
+                    {
+                        description: "Use water flow principles to guide efficient energy distribution",
+                        inspiration: "Water seeks the most efficient path - Codex Leicester",
+                        stage: "PROTOTYPE",
+                        notes: "Prototype feasible with current technology; refine through user feedback"
                     }
                 ],
                 slm_outputs: {
                     mechanics: [
-                        "Pyramidal force distribution for structural integrity",
-                        "Worm gear mechanisms for compact power transmission"
+                        "Apply pyramidal law of force to enhance mechanical efficiency || Pyramidal law of force: power diminishes towards its end || Source: Madrid I, 16r - Studies of spring mechanics",
+                        "Use water flow principles for efficient energy distribution || Water seeks the most efficient path; design channels to guide flow || Source: Codex Leicester - Studies of water vortices"
                     ],
                     anatomy: [
-                        "Vitruvian proportions for optimal ergonomics",
-                        "Layered system integration mimicking muscle structures"
+                        "Incorporate Vitruvian proportions for optimal ergonomics || Proportional harmony based on the Vitruvian system || Source: Venice Accademia - Proportional Study",
+                        "Apply layered system integration mimicking biological structures || Layered system integration (like muscle, tendon, bone) || Source: Anatomical drawings - Cross Sections"
                     ],
                     optics: [
-                        "Sfumato gradients for perceptual depth",
-                        "Golden ratio implementation for aesthetic harmony"
+                        "Integrate sfumato gradients for perceptual depth || Sfumato: do not make definite boundaries || Source: Ash.II, 14v - Treatise on Painting",
+                        "Apply golden ratio for aesthetic harmony || Golden ratio in natural and man-made designs || Source: Paciolian influences - Divine Proportion"
                     ]
                 }
             };
             
-            displayResults(mockData);
-        }
-
-        // Display results
-        function displayResults(data) {
-            const resultContainer = document.getElementById('resultContainer');
-            const slmOutputs = document.getElementById('slmOutputs');
+            // Add SLM outputs
+            addAIMessage('<div style="margin-bottom: 1rem;">Running specialized Small Language Models (SLMs) based on da Vinci\'s knowledge domains...</div>');
             
-            // Build result HTML
-            resultContainer.innerHTML = `
-                <div class="result-header">
-                    <div class="result-title">${data.name}</div>
-                    <div class="result-meta">
-                        <div class="meta-item">
-                            <span class="meta-label">Market</span>
-                            <span class="meta-value">${data.target_market}</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Innovation</span>
-                            <span class="meta-value">${data.innovation_score}/10</span>
-                            <div class="score-bar">
-                                <div class="score-fill" style="width: ${data.innovation_score * 10}%"></div>
-                            </div>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Feasibility</span>
-                            <span class="meta-value">${data.feasibility_score}/10</span>
-                            <div class="score-bar">
-                                <div class="score-fill" style="width: ${data.feasibility_score * 10}%"></div>
-                            </div>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Viability</span>
-                            <span class="meta-value">${data.viability_score}</span>
-                            <div class="score-bar">
-                                <div class="score-fill" style="width: ${data.viability_score * 100}%"></div>
-                            </div>
-                        </div>
+            // Add each SLM output
+            addAIMessage(formatSLMOutput('Mechanics & Physics SLM Output', '⚙', mockData.slm_outputs.mechanics, 'mechanics'));
+            addAIMessage(formatSLMOutput('Anatomy & Biology SLM Output', '🦋', mockData.slm_outputs.anatomy, 'anatomy'));
+            addAIMessage(formatSLMOutput('Optics & Aesthetics SLM Output', '👁', mockData.slm_outputs.optics, 'optics'));
+            
+            // Add synthesis
+            const synthesisContent = `
+                <div class="synthesis-section">
+                    <div class="synthesis-header">
+                        <div class="synthesis-icon">◈</div>
+                        <div class="synthesis-title">Da Vinci Abstraction Organ: Synthesis</div>
+                    </div>
+                    <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                        Synthesizing outputs from the three SLMs into cohesive design features...
+                    </p>
+                    <div class="features-grid">
+                        ${formatFeatures(mockData.features)}
                     </div>
                 </div>
-                
-                <div class="features-list">
-                    <h3 style="color: var(--primary-gold); margin-bottom: 1rem;">Synthesized Features</h3>
-                    ${data.features.map(feature => `
-                        <div class="feature-item">
-                            <div class="feature-description">
-                                ${feature.description}
-                                <span class="stage-badge stage-${feature.stage.toLowerCase()}">${feature.stage.replace('_', ' ')}</span>
-                            </div>
-                            <div class="feature-meta">
-                                <strong>Inspiration:</strong> ${feature.inspiration}<br>
-                                <strong>Notes:</strong> ${feature.notes}
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
             `;
+            addAIMessage(synthesisContent);
             
-            // Build SLM outputs
-            slmOutputs.innerHTML = `
-                <div class="slm-card">
-                    <div class="slm-title">◈ Mechanics & Physics</div>
-                    ${data.slm_outputs.mechanics.map(insight => `
-                        <div class="slm-insight">• ${insight}</div>
-                    `).join('')}
-                </div>
-                <div class="slm-card">
-                    <div class="slm-title">◈ Anatomy & Biology</div>
-                    ${data.slm_outputs.anatomy.map(insight => `
-                        <div class="slm-insight">• ${insight}</div>
-                    `).join('')}
-                </div>
-                <div class="slm-card">
-                    <div class="slm-title">◈ Optics & Aesthetics</div>
-                    ${data.slm_outputs.optics.map(insight => `
-                        <div class="slm-insight">• ${insight}</div>
-                    `).join('')}
-                </div>
-            `;
-            
-            resultContainer.classList.add('active');
-            slmOutputs.style.display = 'grid';
-        }
-
-        // Show error message
-        function showError(message) {
-            const errorElement = document.getElementById('errorMessage');
-            errorElement.textContent = message;
-            errorElement.classList.add('active');
+            // Add final product
+            addAIMessage(formatProductSummary(mockData));
         }
 
         // Event listeners
