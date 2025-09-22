@@ -700,7 +700,15 @@
             align-items: center;
             margin: 2rem 0;
             position: relative;
-            height: 120px;
+            height: 150px;
+        }
+
+        .slm-node-container {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .slm-node {
@@ -711,11 +719,18 @@
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
-            position: absolute;
             background: var(--card-bg);
             border: 2px solid var(--primary-gold);
             animation: nodeAppear 0.5s ease forwards;
             box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .slm-node-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-align: center;
+            opacity: 0;
+            animation: fadeIn 0.5s ease forwards;
         }
 
         @keyframes nodeAppear {
@@ -729,20 +744,41 @@
             }
         }
 
-        .slm-node.mechanics {
+        .slm-node-container.mechanics {
             left: 0;
+        }
+
+        .slm-node-container.mechanics .slm-node {
             animation-delay: 0s;
         }
 
-        .slm-node.anatomy {
+        .slm-node-container.mechanics .slm-node-label {
+            animation-delay: 0.3s;
+        }
+
+        .slm-node-container.anatomy {
             left: 50%;
             transform: translateX(-50%);
+        }
+
+        .slm-node-container.anatomy .slm-node {
             animation-delay: 0.2s;
         }
 
-        .slm-node.optics {
+        .slm-node-container.anatomy .slm-node-label {
+            animation-delay: 0.5s;
+        }
+
+        .slm-node-container.optics {
             right: 0;
+        }
+
+        .slm-node-container.optics .slm-node {
             animation-delay: 0.4s;
+        }
+
+        .slm-node-container.optics .slm-node-label {
+            animation-delay: 0.7s;
         }
 
         .connection-line {
@@ -750,9 +786,9 @@
             height: 2px;
             background: linear-gradient(90deg, transparent, var(--primary-gold), transparent);
             top: 50%;
-            transform: translateY(-50%);
+            transform: translateY(-15px);
             animation: lineGrow 1s ease forwards;
-            animation-delay: 0.6s;
+            animation-delay: 0.8s;
             opacity: 0;
         }
 
@@ -789,10 +825,10 @@
             color: var(--dark-bg);
             position: absolute;
             left: 50%;
-            top: 50%;
+            top: 45%;
             transform: translate(-50%, -50%) scale(0);
             animation: centerPulse 1s ease forwards;
-            animation-delay: 1.2s;
+            animation-delay: 1.4s;
             box-shadow: 0 0 40px rgba(212, 175, 55, 0.6);
         }
 
@@ -816,7 +852,7 @@
             margin-top: 1rem;
             opacity: 0;
             animation: fadeIn 0.5s ease forwards;
-            animation-delay: 1.8s;
+            animation-delay: 2s;
         }
 
         /* Scrollbar Styling */
@@ -1211,11 +1247,20 @@
                 // Add synthesis animation
                 const synthesisAnimationContent = `
                     <div class="synthesis-animation">
-                        <div class="slm-node mechanics">⚙</div>
+                        <div class="slm-node-container mechanics">
+                            <div class="slm-node">⚙</div>
+                            <div class="slm-node-label">Mechanics</div>
+                        </div>
                         <div class="connection-line left"></div>
-                        <div class="slm-node anatomy">🦋</div>
+                        <div class="slm-node-container anatomy">
+                            <div class="slm-node">🦋</div>
+                            <div class="slm-node-label">Anatomy</div>
+                        </div>
                         <div class="connection-line right"></div>
-                        <div class="slm-node optics">👁</div>
+                        <div class="slm-node-container optics">
+                            <div class="slm-node">👁</div>
+                            <div class="slm-node-label">Optics</div>
+                        </div>
                         <div class="synthesis-center">◈</div>
                     </div>
                     <div class="synthesis-text">
@@ -1349,11 +1394,20 @@
             // Add synthesis animation
             const synthesisAnimationContent = `
                 <div class="synthesis-animation">
-                    <div class="slm-node mechanics">⚙</div>
+                    <div class="slm-node-container mechanics">
+                        <div class="slm-node">⚙</div>
+                        <div class="slm-node-label">Mechanics</div>
+                    </div>
                     <div class="connection-line left"></div>
-                    <div class="slm-node anatomy">🦋</div>
+                    <div class="slm-node-container anatomy">
+                        <div class="slm-node">🦋</div>
+                        <div class="slm-node-label">Anatomy</div>
+                    </div>
                     <div class="connection-line right"></div>
-                    <div class="slm-node optics">👁</div>
+                    <div class="slm-node-container optics">
+                        <div class="slm-node">👁</div>
+                        <div class="slm-node-label">Optics</div>
+                    </div>
                     <div class="synthesis-center">◈</div>
                 </div>
                 <div class="synthesis-text">
