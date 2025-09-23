@@ -12,23 +12,24 @@
         }
 
         :root {
-            --primary: #8B7500;
-            --primary-dark: #6B5A00;
-            --secondary: #B8960F;
-            --tertiary: #DAA520;
-            --quaternary: #F4E4BC;
+            --primary: #2C3E50;
+            --primary-dark: #1A252F;
+            --secondary: #34495E;
+            --tertiary: #7F8C8D;
+            --quaternary: #95A5A6;
             --background: #FFFFFF;
-            --surface: #FFFEF9;
-            --border: #F0EDE5;
-            --accent: #8B7500;
-            --accent-light: rgba(139, 117, 0, 0.1);
-            --accent-lighter: rgba(139, 117, 0, 0.05);
-            --success: #6B8E23;
-            --warning: #B8860B;
-            --error: #CD5C5C;
-            --mechanics: #8B7500;
-            --anatomy: #B8860B;
-            --optics: #DAA520;
+            --surface: #F8F9FA;
+            --border: #E9ECEF;
+            --accent: #D4AF37;
+            --accent-dark: #B8960F;
+            --accent-light: rgba(212, 175, 55, 0.15);
+            --accent-lighter: rgba(212, 175, 55, 0.08);
+            --success: #27AE60;
+            --warning: #F39C12;
+            --error: #E74C3C;
+            --mechanics: #3498DB;
+            --anatomy: #27AE60;
+            --optics: #F39C12;
             --shadow-xs: 0 1px 2px rgba(139, 117, 0, 0.04);
             --shadow-sm: 0 2px 4px rgba(139, 117, 0, 0.06);
             --shadow-md: 0 4px 8px rgba(139, 117, 0, 0.08);
@@ -85,7 +86,7 @@
         .logo-mark {
             width: 32px;
             height: 32px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background: linear-gradient(135deg, var(--accent-dark), var(--accent));
             border-radius: 8px;
             display: flex;
             align-items: center;
@@ -100,7 +101,7 @@
             font-size: 16px;
             font-weight: 600;
             letter-spacing: -0.5px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background: linear-gradient(135deg, var(--primary), var(--accent-dark));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -183,7 +184,7 @@
         .generate-btn {
             width: 100%;
             padding: 12px 20px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background: linear-gradient(135deg, var(--accent-dark), var(--accent));
             color: white;
             border: none;
             border-radius: 8px;
@@ -198,9 +199,9 @@
         }
 
         .generate-btn:hover:not(:disabled) {
-            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            background: linear-gradient(135deg, #9B7B00, var(--accent-dark));
             transform: translateY(-1px);
-            box-shadow: var(--shadow-md);
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
         }
 
         .generate-btn:disabled {
@@ -311,7 +312,7 @@
         }
 
         .message-user-content {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background: var(--primary);
             color: white;
             padding: 12px 16px;
             border-radius: 16px 16px 4px 16px;
@@ -761,16 +762,28 @@
             line-height: 1.4;
         }
 
-        /* Final Product */
+        /* Final Product - Professional Design */
         .product-section {
             margin-top: 48px;
-            padding: 32px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
+            padding: 40px;
+            background: linear-gradient(135deg, #FFFFFF, #F8F9FA);
+            border: 1px solid var(--border);
             border-radius: 16px;
             opacity: 0;
             animation: fadeInProduct 0.8s var(--transition) forwards;
-            box-shadow: var(--shadow-xl);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--mechanics), var(--anatomy), var(--optics), var(--accent));
         }
 
         @keyframes fadeInProduct {
@@ -786,25 +799,36 @@
 
         .product-header {
             margin-bottom: 32px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border);
         }
 
         .product-name {
-            font-size: 24px;
-            font-weight: 600;
+            font-size: 28px;
+            font-weight: 700;
             margin-bottom: 8px;
             letter-spacing: -0.5px;
+            color: var(--primary);
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .product-market {
             font-size: 14px;
-            opacity: 0.8;
+            color: var(--text-tertiary);
+            font-weight: 500;
         }
 
         .scores-container {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
+            gap: 32px;
             margin: 32px 0;
+            padding: 24px;
+            background: var(--surface);
+            border-radius: 12px;
         }
 
         .score-item {
@@ -814,52 +838,154 @@
         .score-label {
             font-size: 11px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            opacity: 0.6;
-            margin-bottom: 8px;
+            letter-spacing: 1px;
+            color: var(--text-tertiary);
+            margin-bottom: 12px;
+            font-weight: 600;
         }
 
         .score-value {
-            font-size: 32px;
-            font-weight: 600;
-            margin-bottom: 8px;
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .score-bar {
-            height: 4px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 2px;
+            height: 6px;
+            background: var(--border);
+            border-radius: 3px;
             overflow: hidden;
+            position: relative;
         }
 
         .score-fill {
             height: 100%;
-            background: white;
-            border-radius: 2px;
+            background: linear-gradient(90deg, var(--accent-dark), var(--accent));
+            border-radius: 3px;
             transition: width 1.5s var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .score-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            100% {
+                left: 100%;
+            }
         }
 
         .product-description {
-            padding: 24px;
-            background: rgba(255, 255, 255, 0.1);
+            padding: 32px;
+            background: white;
+            border: 1px solid var(--border);
             border-radius: 12px;
             line-height: 1.8;
             font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .product-description h3 {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-tertiary);
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .product-highlights {
+            margin-bottom: 24px;
+        }
+
+        .product-highlights h4 {
+            font-size: 16px;
+            color: var(--primary);
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .highlight-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .highlight-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 16px;
+            padding-left: 28px;
+            position: relative;
+        }
+
+        .highlight-item::before {
+            content: '◈';
+            position: absolute;
+            left: 0;
+            top: 2px;
+            color: var(--accent);
+            font-size: 14px;
+        }
+
+        .highlight-text {
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+
+        .highlight-feature {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .product-summary {
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+        }
+
+        .summary-text {
+            font-size: 15px;
+            line-height: 1.7;
+            color: var(--text-secondary);
+            font-style: italic;
         }
 
         .principles-list {
             display: flex;
             gap: 12px;
-            margin-top: 24px;
+            margin-top: 32px;
             flex-wrap: wrap;
         }
 
         .principle-tag {
-            padding: 8px 16px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, var(--accent-lighter), transparent);
+            border: 1px solid var(--accent);
+            border-radius: 24px;
             font-size: 12px;
-            font-weight: 500;
+            font-weight: 600;
+            color: var(--primary);
+            transition: all 0.2s var(--transition);
+        }
+
+        .principle-tag:hover {
+            background: var(--accent);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
         }
 
         /* Loading State */
@@ -1078,6 +1204,16 @@
         }
 
         function formatProduct(data) {
+            const featuresList = data.features.map(feat => `
+                <li class="highlight-item">
+                    <div class="highlight-text">
+                        <span class="highlight-feature">${feat.description}</span> - 
+                        Inspired by "${feat.inspiration}", this feature is currently at 
+                        ${feat.stage.toLowerCase().replace('_', ' ')} stage. ${feat.notes}.
+                    </div>
+                </li>
+            `).join('');
+
             return `
                 <div class="product-section">
                     <div class="product-header">
@@ -1087,21 +1223,21 @@
                     
                     <div class="scores-container">
                         <div class="score-item">
-                            <div class="score-label">Innovation</div>
-                            <div class="score-value">${data.innovation_score}</div>
+                            <div class="score-label">Innovation Score</div>
+                            <div class="score-value">${data.innovation_score}/10</div>
                             <div class="score-bar">
                                 <div class="score-fill" style="width: ${data.innovation_score * 10}%"></div>
                             </div>
                         </div>
                         <div class="score-item">
-                            <div class="score-label">Feasibility</div>
-                            <div class="score-value">${data.feasibility_score}</div>
+                            <div class="score-label">Feasibility Score</div>
+                            <div class="score-value">${data.feasibility_score}/10</div>
                             <div class="score-bar">
                                 <div class="score-fill" style="width: ${data.feasibility_score * 10}%"></div>
                             </div>
                         </div>
                         <div class="score-item">
-                            <div class="score-label">Viability</div>
+                            <div class="score-label">Market Viability</div>
                             <div class="score-value">${(data.viability_score * 100).toFixed(0)}%</div>
                             <div class="score-bar">
                                 <div class="score-fill" style="width: ${data.viability_score * 100}%"></div>
@@ -1110,25 +1246,30 @@
                     </div>
                     
                     <div class="product-description">
-                        The ${data.name} revolutionizes the ${data.product_type} category for ${data.target_market} users.
-                        Drawing from da Vinci's genius, it seamlessly blends mechanical precision, biological inspiration, and aesthetic elegance.
+                        <h3>Final Product Design</h3>
                         
-                        ${data.features.map(feat => `
-                            It incorporates ${feat.description.toLowerCase()}, inspired by "${feat.inspiration}", 
-                            currently at ${feat.stage.toLowerCase().replace('_', ' ')} stage (${feat.notes.toLowerCase()}).
-                        `).join(' ')}
+                        <div class="product-highlights">
+                            <h4>${data.name} - Revolutionary ${data.product_type}</h4>
+                            <ul class="highlight-list">
+                                ${featuresList}
+                            </ul>
+                        </div>
                         
-                        This design not only scores ${data.innovation_score}/10 in innovation but also ${data.feasibility_score}/10 
-                        in feasibility, yielding a strong market viability of ${(data.viability_score * 100).toFixed(0)}%. 
-                        
-                        Imagine a product that feels like an extension of nature itself—durable, intuitive, and beautifully 
-                        crafted for everyday use, embodying the Renaissance ideal of perfect harmony between form and function.
+                        <div class="product-summary">
+                            <p class="summary-text">
+                                The ${data.name} represents a paradigm shift in ${data.product_type} design, 
+                                seamlessly integrating mechanical precision, biological inspiration, and aesthetic elegance. 
+                                With an innovation score of ${data.innovation_score}/10 and feasibility rating of 
+                                ${data.feasibility_score}/10, this design achieves a remarkable ${(data.viability_score * 100).toFixed(0)}% 
+                                market viability, embodying the Renaissance ideal of perfect harmony between form and function.
+                            </p>
+                        </div>
                     </div>
                     
                     <div class="principles-list">
-                        <div class="principle-tag">Mechanics & Physics</div>
-                        <div class="principle-tag">Anatomy & Biology</div>
-                        <div class="principle-tag">Optics & Aesthetics</div>
+                        <div class="principle-tag">⚙ Mechanics & Physics</div>
+                        <div class="principle-tag">🦋 Anatomy & Biology</div>
+                        <div class="principle-tag">👁 Optics & Aesthetics</div>
                     </div>
                 </div>
             `;
@@ -1217,39 +1358,54 @@
                 await processSLM('anatomy', '🦋', data.slm_outputs.anatomy);
                 await processSLM('optics', '👁', data.slm_outputs.optics);
                 
-                // Synthesis animation with transformation
+                // Enhanced synthesis animation with converging nodes
                 await new Promise(resolve => setTimeout(resolve, 500));
                 document.getElementById('synthesisSection').innerHTML = `
                     <div class="synthesis-container" id="synthesisContainer">
-                        <div class="synthesis-particles" id="particlesContainer"></div>
                         <div class="synthesis-header">
                             <div class="synthesis-title">Da Vinci Abstraction Organ</div>
                             <div class="synthesis-subtitle">Synthesizing knowledge domains...</div>
                         </div>
-                        <div class="synthesis-visual">
-                            <div class="knowledge-node mechanics">
+                        <div class="synthesis-visual" id="synthesisVisual">
+                            <div class="knowledge-node mechanics" id="nodeMechanics">
                                 <div class="node-icon">⚙</div>
                                 <div class="node-label">Mechanics</div>
                             </div>
-                            <div class="knowledge-node anatomy">
+                            <div class="knowledge-node anatomy" id="nodeAnatomy">
                                 <div class="node-icon">🦋</div>
                                 <div class="node-label">Anatomy</div>
                             </div>
-                            <div class="knowledge-node optics">
+                            <div class="knowledge-node optics" id="nodeOptics">
                                 <div class="node-icon">👁</div>
                                 <div class="node-label">Optics</div>
                             </div>
-                            <div class="connection-lines">
-                                <div class="connection-line"></div>
-                            </div>
-                            <div class="synthesis-center">◈</div>
+                            <div class="synthesis-center" id="synthesisCenter">◈</div>
                         </div>
-                        <div class="energy-burst" id="energyBurst"></div>
                     </div>
                 `;
                 
-                // Wait for synthesis animation to complete
-                await new Promise(resolve => setTimeout(resolve, 2000));
+                // Wait for nodes to appear
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                
+                // Start converging animation
+                const nodeMechanics = document.getElementById('nodeMechanics');
+                const nodeAnatomy = document.getElementById('nodeAnatomy');
+                const nodeOptics = document.getElementById('nodeOptics');
+                const synthesisCenter = document.getElementById('synthesisCenter');
+                
+                // Add converging class to nodes
+                nodeMechanics.classList.add('converging');
+                nodeAnatomy.classList.add('converging');
+                nodeOptics.classList.add('converging');
+                
+                // Wait for nodes to converge
+                await new Promise(resolve => setTimeout(resolve, 600));
+                
+                // Show synthesis center expanding
+                synthesisCenter.classList.add('expanding');
+                
+                // Wait for center to fully expand
+                await new Promise(resolve => setTimeout(resolve, 1500));
                 
                 // Features section (initially hidden)
                 document.getElementById('featuresSection').innerHTML = `
@@ -1261,45 +1417,24 @@
                     </div>
                 `;
                 
-                // Trigger the transformation animation
+                // Start the transformation
                 const synthesisContainer = document.getElementById('synthesisContainer');
                 const featuresDiv = document.getElementById('featuresDiv');
-                const energyBurst = document.getElementById('energyBurst');
-                const particlesContainer = document.getElementById('particlesContainer');
-                
-                // Create particles
-                for (let i = 0; i < 20; i++) {
-                    const particle = document.createElement('div');
-                    particle.className = 'particle';
-                    particle.style.left = `${50 + (Math.random() - 0.5) * 30}%`;
-                    particle.style.top = `${50 + (Math.random() - 0.5) * 30}%`;
-                    particle.style.setProperty('--tx', `${(Math.random() - 0.5) * 200}px`);
-                    particle.style.setProperty('--ty', `${(Math.random() - 0.5) * 200}px`);
-                    particle.style.animationDelay = `${Math.random() * 0.5}s`;
-                    particlesContainer.appendChild(particle);
-                }
                 
                 // Wait a moment before transformation
-                await new Promise(resolve => setTimeout(resolve, 1000));
+                await new Promise(resolve => setTimeout(resolve, 500));
                 
-                // Start the transformation
+                // Collapse synthesis container
                 synthesisContainer.classList.add('transforming');
                 
-                // Animate particles
-                document.querySelectorAll('.particle').forEach(p => p.classList.add('animating'));
-                
-                // Show energy burst
-                await new Promise(resolve => setTimeout(resolve, 700));
-                energyBurst.classList.add('active');
-                
-                // Wait for synthesis to vanish
+                // Wait for container to collapse
                 await new Promise(resolve => setTimeout(resolve, 800));
                 
-                // Emerge features from the synthesis point
+                // Emerge features with golden glow
                 featuresDiv.classList.add('emerging');
                 
                 // Wait for features to fully appear
-                await new Promise(resolve => setTimeout(resolve, 1500));
+                await new Promise(resolve => setTimeout(resolve, 2000));
                 
                 // Final product
                 document.getElementById('productSection').innerHTML = formatProduct(data);
