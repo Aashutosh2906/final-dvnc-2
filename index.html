@@ -1455,6 +1455,12 @@
             indicator.classList.add('active');
             status.style.display = 'inline-block';
             
+            // Auto-scroll to this section
+            const step = document.getElementById(`${type}Step`);
+            if (step) {
+                step.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            
             await new Promise(resolve => setTimeout(resolve, 1000));
             
             outputsContainer.innerHTML = formatSLMOutputs(type, icon, outputs);
