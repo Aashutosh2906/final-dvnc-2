@@ -378,15 +378,6 @@
             }
         }
 
-        @keyframes pulse {
-            0%, 100% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.1);
-            }
-        }
-
         .step-indicator.mechanics.complete {
             background: var(--mechanics);
             border-color: var(--mechanics);
@@ -1004,10 +995,10 @@
             height: 8px;
             background: var(--accent);
             border-radius: 50%;
-            animation: loadingPulse 1.4s ease-in-out infinite;
+            animation: pulse 1.4s ease-in-out infinite;
         }
 
-        @keyframes loadingPulse {
+        @keyframes pulse {
             0%, 80%, 100% {
                 transform: scale(0.8);
                 opacity: 0.5;
@@ -1389,17 +1380,9 @@
                                 <div class="node-label">Optics</div>
                             </div>
                             <div class="synthesis-center" id="synthesisCenter">◈</div>
-                            <div class="connection-lines">
-                                <div class="connection-line" style="left: 50%; transform: translateX(-50%) rotate(0deg);"></div>
-                                <div class="connection-line" style="left: 50%; transform: translateX(-50%) rotate(120deg);"></div>
-                                <div class="connection-line" style="left: 50%; transform: translateX(-50%) rotate(240deg);"></div>
-                            </div>
                         </div>
                     </div>
                 `;
-                
-                // Auto-scroll to synthesis section
-                document.getElementById('synthesisContainer').scrollIntoView({ behavior: 'smooth', block: 'center' });
                 
                 // Wait for nodes to appear
                 await new Promise(resolve => setTimeout(resolve, 1500));
@@ -1409,35 +1392,24 @@
                 const nodeAnatomy = document.getElementById('nodeAnatomy');
                 const nodeOptics = document.getElementById('nodeOptics');
                 const synthesisCenter = document.getElementById('synthesisCenter');
-                const synthesisVisual = document.getElementById('synthesisVisual');
                 
-                // Add inline styles for convergence animation
-                nodeMechanics.style.transition = 'transform 1s cubic-bezier(0.4, 0, 0.2, 1)';
-                nodeAnatomy.style.transition = 'transform 1s cubic-bezier(0.4, 0, 0.2, 1)';
-                nodeOptics.style.transition = 'transform 1s cubic-bezier(0.4, 0, 0.2, 1)';
-                
-                // Move nodes toward center
-                nodeMechanics.style.transform = 'translateX(40px)';
-                nodeAnatomy.style.transform = 'translateX(0px) translateY(-20px)';
-                nodeOptics.style.transform = 'translateX(-40px)';
+                // Add converging class to nodes
+                nodeMechanics.classList.add('converging');
+                nodeAnatomy.classList.add('converging');
+                nodeOptics.classList.add('converging');
                 
                 // Wait for nodes to converge
-                await new Promise(resolve => setTimeout(resolve, 1000));
+                await new Promise(resolve => setTimeout(resolve, 600));
                 
-                // Show synthesis center expanding with pulse
-                synthesisCenter.style.animation = 'centerExpand 1s cubic-bezier(0.4, 0, 0.2, 1) forwards, pulse 0.6s ease-out 1s 3';
+                // Show synthesis center expanding
+                synthesisCenter.classList.add('expanding');
                 
                 // Wait for center to fully expand
-                await new Promise(resolve => setTimeout(resolve, 2000));
-                
-                // Transform synthesis visual to show it's creating the features
-                synthesisVisual.style.transition = 'transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.8s ease-out';
-                synthesisVisual.style.transform = 'scale(0.8) translateY(-20px)';
-                synthesisVisual.style.opacity = '0.7';
+                await new Promise(resolve => setTimeout(resolve, 1500));
                 
                 // Features section (initially hidden)
                 document.getElementById('featuresSection').innerHTML = `
-                    <div class="features-section" id="featuresDiv" style="opacity: 0; transform: translateY(30px);">
+                    <div class="features-section" id="featuresDiv">
                         <div class="features-header">Synthesized Design Features</div>
                         <div class="features-grid">
                             ${formatFeatures(data.features)}
@@ -1452,34 +1424,20 @@
                 // Wait a moment before transformation
                 await new Promise(resolve => setTimeout(resolve, 500));
                 
-                // Create arrow or flow indicator
-                const flowIndicator = document.createElement('div');
-                flowIndicator.style.cssText = `
-                    text-align: center;
-                    font-size: 24px;
-                    color: var(--accent);
-                    margin: 20px 0;
-                    opacity: 0;
-                    animation: fadeIn 0.5s ease-out forwards;
-                `;
-                flowIndicator.innerHTML = '↓';
-                synthesisContainer.parentNode.insertBefore(flowIndicator, synthesisContainer.nextSibling);
+                // Collapse synthesis container
+                synthesisContainer.classList.add('transforming');
                 
-                // Auto-scroll to features section
-                featuresDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                // Wait for container to collapse
+                await new Promise(resolve => setTimeout(resolve, 800));
                 
-                // Animate features appearing from synthesis
-                featuresDiv.style.transition = 'opacity 1s ease-out, transform 1s cubic-bezier(0.4, 0, 0.2, 1)';
-                await new Promise(resolve => setTimeout(resolve, 100));
-                featuresDiv.style.opacity = '1';
-                featuresDiv.style.transform = 'translateY(0)';
+                // Emerge features with golden glow
+                featuresDiv.classList.add('emerging');
                 
                 // Wait for features to fully appear
                 await new Promise(resolve => setTimeout(resolve, 2000));
                 
-                // Auto-scroll to final product section
+                // Final product
                 document.getElementById('productSection').innerHTML = formatProduct(data);
-                document.getElementById('productSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
                 
             } catch (error) {
                 console.error('Error:', error);
