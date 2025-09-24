@@ -544,52 +544,55 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 48px;
+            gap: 80px;
             margin: 48px 0;
             position: relative;
         }
 
         .knowledge-node {
-            width: 80px;
-            height: 80px;
-            background: var(--background);
+            width: 90px;
+            height: 90px;
+            background: linear-gradient(135deg, var(--background), var(--surface));
             border-radius: 50%;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             gap: 4px;
-            box-shadow: var(--shadow-md);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
             position: relative;
             z-index: 2;
             opacity: 0;
-            animation: nodeAppear 0.6s var(--transition) forwards;
+            animation: nodeAppear 0.8s var(--transition) forwards;
         }
 
         @keyframes nodeAppear {
             from {
                 opacity: 0;
-                transform: scale(0);
+                transform: scale(0) rotate(-180deg);
             }
             to {
                 opacity: 1;
-                transform: scale(1);
+                transform: scale(1) rotate(0deg);
             }
         }
 
         .knowledge-node.mechanics {
             animation-delay: 0s;
-            border: 2px solid var(--mechanics);
+            border: 3px solid var(--mechanics);
+            background: linear-gradient(135deg, rgba(52, 152, 219, 0.05), var(--background));
         }
 
         .knowledge-node.anatomy {
-            animation-delay: 0.2s;
-            border: 2px solid var(--anatomy);
+            animation-delay: 0.15s;
+            border: 3px solid var(--anatomy);
+            background: linear-gradient(135deg, rgba(39, 174, 96, 0.05), var(--background));
         }
 
         .knowledge-node.optics {
-            animation-delay: 0.4s;
-            border: 2px solid var(--optics);
+            animation-delay: 0.3s;
+            border: 3px solid var(--optics);
+            background: linear-gradient(135deg, rgba(243, 156, 18, 0.05), var(--background));
         }
 
         .node-icon {
@@ -604,18 +607,18 @@
 
         .synthesis-center {
             position: absolute;
-            width: 100px;
-            height: 100px;
-            background: linear-gradient(135deg, var(--mechanics), var(--anatomy), var(--optics));
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.2), rgba(212, 175, 55, 0.05));
+            border: 2px solid var(--accent);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-size: 32px;
+            color: var(--accent);
+            font-size: 36px;
             opacity: 0;
-            animation: centerExpand 1s var(--transition) 0.8s forwards;
-            box-shadow: var(--shadow-xl);
+            box-shadow: 0 0 40px rgba(212, 175, 55, 0.2);
         }
 
         @keyframes centerExpand {
@@ -1389,11 +1392,6 @@
                                 <div class="node-label">Optics</div>
                             </div>
                             <div class="synthesis-center" id="synthesisCenter">◈</div>
-                            <div class="connection-lines">
-                                <div class="connection-line" style="left: 50%; transform: translateX(-50%) rotate(0deg);"></div>
-                                <div class="connection-line" style="left: 50%; transform: translateX(-50%) rotate(120deg);"></div>
-                                <div class="connection-line" style="left: 50%; transform: translateX(-50%) rotate(240deg);"></div>
-                            </div>
                         </div>
                     </div>
                 `;
@@ -1416,10 +1414,11 @@
                 nodeAnatomy.style.transition = 'transform 1s cubic-bezier(0.4, 0, 0.2, 1)';
                 nodeOptics.style.transition = 'transform 1s cubic-bezier(0.4, 0, 0.2, 1)';
                 
-                // Move nodes toward center
-                nodeMechanics.style.transform = 'translateX(40px)';
-                nodeAnatomy.style.transform = 'translateX(0px) translateY(-20px)';
-                nodeOptics.style.transform = 'translateX(-40px)';
+                // Move nodes toward center with equal importance
+                await new Promise(resolve => setTimeout(resolve, 200));
+                nodeMechanics.style.transform = 'translateX(60px) scale(0.95)';
+                nodeAnatomy.style.transform = 'translateX(0px) scale(0.95)';
+                nodeOptics.style.transform = 'translateX(-60px) scale(0.95)';
                 
                 // Wait for nodes to converge
                 await new Promise(resolve => setTimeout(resolve, 1000));
