@@ -245,18 +245,6 @@
             height: calc(100vh - 112px);
             animation: fadeIn 0.6s var(--transition);
             overflow: hidden;
-            position: relative;
-        }
-
-        /* Constellation background canvas */
-        .constellation-canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
         }
 
         @keyframes fadeIn {
@@ -280,7 +268,6 @@
             padding: 10px;
             position: relative;
             height: 100%;
-            z-index: 1;
         }
 
         .tagline {
@@ -314,7 +301,7 @@
             position: relative;
         }
 
-        /* Main pulsating circle with planet effect */
+        /* Main pulsating circle with heartbeat effect */
         .main-circle {
             width: 48px;
             height: 48px;
@@ -324,30 +311,8 @@
             opacity: 0;
             animation: scaleIn 0.8s ease forwards 0.3s, heartbeat 2s ease-in-out infinite 0.8s;
             position: relative;
-            box-shadow: 0 0 30px rgba(212, 175, 55, 0.4),
-                        inset -5px -5px 10px rgba(184, 150, 15, 0.3),
-                        inset 5px 5px 10px rgba(255, 255, 255, 0.2);
-        }
-
-        /* Planet glow effect */
-        .main-circle::after {
-            content: '';
-            position: absolute;
-            top: -20%;
-            left: -20%;
-            width: 140%;
-            height: 140%;
-            border-radius: 50%;
-            background: radial-gradient(circle at center, 
-                        rgba(212, 175, 55, 0.2) 0%, 
-                        rgba(212, 175, 55, 0.1) 40%, 
-                        transparent 70%);
-            animation: planetGlow 3s ease-in-out infinite;
-        }
-
-        @keyframes planetGlow {
-            0%, 100% { opacity: 0.5; transform: scale(1); }
-            50% { opacity: 0.8; transform: scale(1.1); }
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+            z-index: 10;
         }
 
         /* Heartbeat animation from second code */
@@ -371,6 +336,38 @@
             70% {
                 transform: scale(1);
                 opacity: 1;
+            }
+        }
+
+        /* Ripple effect for main circle */
+        .main-circle::before,
+        .main-circle::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            transform: translate(-50%, -50%);
+            animation: ripple 2s ease-out infinite;
+        }
+
+        .main-circle::after {
+            animation-delay: 0.3s;
+        }
+
+        @keyframes ripple {
+            0% {
+                width: 100%;
+                height: 100%;
+                opacity: 0.6;
+            }
+            100% {
+                width: 200%;
+                height: 200%;
+                opacity: 0;
             }
         }
 
@@ -428,7 +425,7 @@
             }
         }
 
-        /* Features wrapper with constellation container */
+        /* New features layout with golden rays */
         .features-wrapper {
             position: relative;
             width: 400px;
@@ -436,28 +433,59 @@
             margin-bottom: 15px;
         }
 
-        /* SVG constellation connections */
-        .constellation-svg {
+        /* Golden rays SVG container */
+        .golden-rays {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
+            top: -150px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 400px;
             pointer-events: none;
+            z-index: 1;
         }
 
-        .constellation-line {
-            stroke: rgba(212, 175, 55, 0.2);
+        .ray-line {
+            stroke: url(#goldGradient);
             stroke-width: 0.5;
             fill: none;
+            opacity: 0;
             stroke-linecap: round;
-            animation: constellationPulse 4s ease-in-out infinite;
+            filter: blur(0.5px);
         }
 
-        @keyframes constellationPulse {
-            0%, 100% { opacity: 0.2; stroke-width: 0.5; }
-            50% { opacity: 0.4; stroke-width: 0.7; }
+        @keyframes rayAppear {
+            0% {
+                opacity: 0;
+                stroke-dashoffset: 200;
+            }
+            50% {
+                opacity: 0.4;
+                stroke-dashoffset: 100;
+            }
+            100% {
+                opacity: 0;
+                stroke-dashoffset: 0;
+            }
+        }
+
+        @keyframes rayGlow {
+            0%, 100% {
+                opacity: 0;
+                filter: blur(0.5px) drop-shadow(0 0 2px rgba(212, 175, 55, 0.3));
+            }
+            20% {
+                opacity: 0.15;
+                filter: blur(0.3px) drop-shadow(0 0 4px rgba(212, 175, 55, 0.5));
+            }
+            50% {
+                opacity: 0.3;
+                filter: blur(0.2px) drop-shadow(0 0 6px rgba(212, 175, 55, 0.6));
+            }
+            80% {
+                opacity: 0.15;
+                filter: blur(0.3px) drop-shadow(0 0 4px rgba(212, 175, 55, 0.5));
+            }
         }
 
         .features-container {
@@ -484,19 +512,6 @@
             margin-top: 20px;
             margin-bottom: 30px;
             justify-content: center;
-            position: relative;
-        }
-
-        /* Secondary constellation SVG */
-        .constellation-svg-secondary {
-            position: absolute;
-            top: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 120%;
-            height: 140%;
-            z-index: 0;
-            pointer-events: none;
         }
 
         .feature-item {
@@ -505,7 +520,7 @@
             align-items: center;
             opacity: 0;
             animation: fadeInScale 0.8s ease forwards;
-            z-index: 2;
+            position: relative;
         }
 
         .feature-item:nth-child(1) { animation-delay: 0.6s; }
@@ -523,7 +538,7 @@
             }
         }
 
-        /* Planet-style feature circles */
+        /* Half-filled circles */
         .feature-circle {
             width: 32px;
             height: 32px;
@@ -534,39 +549,16 @@
             justify-content: center;
             margin-bottom: 8px;
             position: relative;
-            overflow: visible;
+            overflow: hidden;
             transition: all 0.3s ease;
-            background: radial-gradient(circle at 30% 30%, 
-                        rgba(212, 175, 55, 0.3), 
-                        rgba(212, 175, 55, 0.1));
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.2),
-                        inset -2px -2px 5px rgba(184, 150, 15, 0.2);
-        }
-
-        /* Orbital ring for planets */
-        .feature-circle::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 150%;
-            height: 150%;
-            border: 0.5px solid rgba(212, 175, 55, 0.1);
-            border-radius: 50%;
-            transform: translate(-50%, -50%) rotateX(60deg);
-            animation: orbit 10s linear infinite;
-        }
-
-        @keyframes orbit {
-            0% { transform: translate(-50%, -50%) rotateX(60deg) rotateZ(0deg); }
-            100% { transform: translate(-50%, -50%) rotateX(60deg) rotateZ(360deg); }
+            z-index: 2;
+            background: rgba(255, 255, 255, 0.95);
         }
 
         .feature-circle:hover {
-            transform: scale(1.15);
+            transform: scale(1.1);
             border-color: var(--accent-dark);
-            box-shadow: 0 0 25px rgba(212, 175, 55, 0.4),
-                        inset -3px -3px 8px rgba(184, 150, 15, 0.3);
+            box-shadow: 0 0 12px rgba(212, 175, 55, 0.3);
         }
 
         .half-fill {
@@ -575,12 +567,9 @@
             left: 0;
             right: 0;
             height: 50%;
-            background: linear-gradient(180deg, 
-                        rgba(212, 175, 55, 0.5), 
-                        rgba(184, 150, 15, 0.3));
+            background: linear-gradient(180deg, var(--accent), var(--accent-dark));
             transition: height 0.3s ease;
             opacity: 0.7;
-            border-radius: 50% 50% 0 0;
         }
 
         .feature-circle:hover .half-fill {
@@ -594,44 +583,24 @@
             border-radius: 50%;
             border: 1px solid var(--accent);
             position: relative;
-            overflow: visible;
+            overflow: hidden;
             transition: all 0.3s ease;
             margin-bottom: 8px;
-            background: radial-gradient(circle at 70% 30%, 
-                        rgba(212, 175, 55, 0.25), 
-                        rgba(212, 175, 55, 0.08));
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.15),
-                        inset -3px -3px 6px rgba(184, 150, 15, 0.15);
-        }
-
-        .feature-circle-secondary::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 160%;
-            height: 160%;
-            border: 0.5px solid rgba(212, 175, 55, 0.08);
-            border-radius: 50%;
-            transform: translate(-50%, -50%) rotateX(45deg);
-            animation: orbit 12s linear infinite reverse;
+            z-index: 2;
+            background: rgba(255, 255, 255, 0.95);
         }
 
         .feature-circle-secondary:hover {
-            transform: scale(1.12);
+            transform: scale(1.08);
             border-color: var(--accent-dark);
-            box-shadow: 0 0 30px rgba(212, 175, 55, 0.3),
-                        inset -4px -4px 10px rgba(184, 150, 15, 0.25);
+            box-shadow: 0 0 12px rgba(212, 175, 55, 0.3);
         }
 
         .feature-circle-secondary .half-fill {
-            background: linear-gradient(180deg, 
-                        transparent, 
-                        rgba(212, 175, 55, 0.4));
+            background: linear-gradient(180deg, var(--accent-dark), var(--accent));
             bottom: 0;
             top: auto;
             opacity: 0.7;
-            border-radius: 0 0 50% 50%;
         }
 
         .feature-text {
@@ -640,66 +609,6 @@
             letter-spacing: 0.8px;
             color: #666;
             text-align: center;
-        }
-
-        /* Connecting lines container */
-        .connection-lines {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .connection-line {
-            stroke: rgba(212, 175, 55, 0.15);
-            stroke-width: 0.8;
-            fill: none;
-            stroke-linecap: round;
-            opacity: 0;
-            animation: fadeInLine 1.5s ease-out forwards;
-        }
-
-        @keyframes fadeInLine {
-            to {
-                opacity: 1;
-            }
-        }
-
-        .connection-line.primary {
-            stroke: rgba(212, 175, 55, 0.2);
-            stroke-width: 1;
-            animation-delay: 0.8s;
-        }
-
-        .connection-line.secondary {
-            stroke: rgba(212, 175, 55, 0.1);
-            stroke-width: 0.6;
-            animation-delay: 1s;
-        }
-
-        .connection-line.cross {
-            stroke: rgba(212, 175, 55, 0.08);
-            stroke-width: 0.5;
-            stroke-dasharray: 2 4;
-            animation-delay: 1.2s;
-        }
-
-        /* Stardust effect */
-        .stardust {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            background: rgba(212, 175, 55, 0.8);
-            border-radius: 50%;
-            animation: twinkle 3s infinite ease-in-out;
-        }
-
-        @keyframes twinkle {
-            0%, 100% { opacity: 0; transform: scale(0); }
-            50% { opacity: 1; transform: scale(1); }
         }
 
         .input-container {
@@ -778,7 +687,12 @@
             .sidebar {
                 display: none;
             }
-            
+
+            .golden-rays {
+                width: 400px;
+                height: 300px;
+            }
+
             .features-container {
                 flex-direction: column;
                 gap: 20px;
@@ -819,11 +733,6 @@
             <div class="logo">
                 <img src="https://static.wixstatic.com/media/33c4b5_158b573e4df145c7856f1330dbd9e49d~mv2.jpg" alt="DVNC.AI" style="height: 36px; width: auto; border-radius: 8px;">
             </div>
-            <!-- New Chat Button -->
-            <button class="new-chat-btn" id="newChatBtn" onclick="startNewChat()">
-                <span>↻</span>
-                <span>New Chat</span>
-            </button>
             <div class="partner-logo" style="display: flex; align-items: center; gap: 10px;">
                 <img src="https://static.wixstatic.com/media/33c4b5_79ea16e09e1b471dae81c5dffb012bb4~mv2.jpeg" alt="TAAMCrypto" style="height: 40px; width: 40px; border-radius: 50%; object-fit: cover;">
                 <span style="font-size: 14px; font-weight: 600; color: var(--text-secondary);">TAAMCrypto</span>
@@ -851,40 +760,64 @@
         <div class="main-content">
             <div class="chat-container" id="chatContainer">
                 <div class="welcome-state" id="welcomeState">
-                    <!-- Constellation background canvas -->
-                    <canvas class="constellation-canvas" id="constellationCanvas"></canvas>
-                    
                     <div class="hero-container">
                         <div class="tagline">Leonardo's Intelligence Reimagined for the 21st Century</div>
                         
-                        <!-- SVG for all connection lines -->
-                        <svg class="connection-lines" id="connectionLines">
-                            <!-- Lines will be dynamically generated -->
-                        </svg>
-                        
                         <div class="logo-section">
-                            <div class="main-circle" id="mainPlanet"></div>
+                            <!-- Golden rays SVG -->
+                            <svg class="golden-rays" width="600" height="400" viewBox="0 0 600 400">
+                                <defs>
+                                    <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#D4AF37;stop-opacity:0.8" />
+                                        <stop offset="50%" style="stop-color:#FFF5DC;stop-opacity:0.6" />
+                                        <stop offset="100%" style="stop-color:#B8960F;stop-opacity:0.4" />
+                                    </linearGradient>
+                                </defs>
+                                
+                                <!-- Ray 1 - Business Strategy -->
+                                <path class="ray-line ray-1" d="M 300 175 L 200 270" stroke-dasharray="200" />
+                                
+                                <!-- Ray 2 - Curation -->
+                                <path class="ray-line ray-2" d="M 300 175 L 300 270" stroke-dasharray="200" />
+                                
+                                <!-- Ray 3 - Policy Ideation -->
+                                <path class="ray-line ray-3" d="M 300 175 L 400 270" stroke-dasharray="200" />
+                                
+                                <!-- Ray 4 - Product Design -->
+                                <path class="ray-line ray-4" d="M 300 175 L 180 340" stroke-dasharray="200" />
+                                
+                                <!-- Ray 5 - Learning Design -->
+                                <path class="ray-line ray-5" d="M 300 175 L 270 340" stroke-dasharray="200" />
+                                
+                                <!-- Ray 6 - Career Design -->
+                                <path class="ray-line ray-6" d="M 300 175 L 330 340" stroke-dasharray="200" />
+                                
+                                <!-- Ray 7 - Research Design -->
+                                <path class="ray-line ray-7" d="M 300 175 L 420 340" stroke-dasharray="200" />
+                            </svg>
+                            
+                            <div class="main-circle" id="mainCircle"></div>
                             <div class="brand-name">DVNC</div>
                         </div>
                         
-                        <!-- Features with constellation connections -->
+                        <!-- Features layout -->
                         <div class="features-wrapper">
-                            <div class="features-container" id="featuresContainer">
+                            <div class="features-container">
                                 <div class="feature-row">
                                     <div class="feature-item">
-                                        <div class="feature-circle" data-planet="1" id="planet1">
+                                        <div class="feature-circle" id="circle1">
                                             <div class="half-fill"></div>
                                         </div>
                                         <div class="feature-text">Business<br>Strategy</div>
                                     </div>
                                     <div class="feature-item">
-                                        <div class="feature-circle" data-planet="2" id="planet2">
+                                        <div class="feature-circle" id="circle2">
                                             <div class="half-fill"></div>
                                         </div>
                                         <div class="feature-text">Curation</div>
                                     </div>
                                     <div class="feature-item">
-                                        <div class="feature-circle" data-planet="3" id="planet3">
+                                        <div class="feature-circle" id="circle3">
                                             <div class="half-fill"></div>
                                         </div>
                                         <div class="feature-text">Policy<br>Ideation</div>
@@ -895,25 +828,25 @@
                         
                         <div class="feature-row-secondary">
                             <div class="feature-item" style="animation-delay: 0.9s;">
-                                <div class="feature-circle-secondary" data-planet="4" id="planet4">
+                                <div class="feature-circle-secondary" id="circle4">
                                     <div class="half-fill"></div>
                                 </div>
                                 <div class="feature-text">Product<br>Design</div>
                             </div>
                             <div class="feature-item" style="animation-delay: 1s;">
-                                <div class="feature-circle-secondary" data-planet="5" id="planet5">
+                                <div class="feature-circle-secondary" id="circle5">
                                     <div class="half-fill"></div>
                                 </div>
                                 <div class="feature-text">Learning<br>Design</div>
                             </div>
                             <div class="feature-item" style="animation-delay: 1.1s;">
-                                <div class="feature-circle-secondary" data-planet="6" id="planet6">
+                                <div class="feature-circle-secondary" id="circle6">
                                     <div class="half-fill"></div>
                                 </div>
                                 <div class="feature-text">Career<br>Design</div>
                             </div>
                             <div class="feature-item" style="animation-delay: 1.2s;">
-                                <div class="feature-circle-secondary" data-planet="7" id="planet7">
+                                <div class="feature-circle-secondary" id="circle7">
                                     <div class="half-fill"></div>
                                 </div>
                                 <div class="feature-text">Research<br>Design</div>
@@ -933,6 +866,34 @@
     </div>
 
     <script>
+        // Animate golden rays
+        document.addEventListener('DOMContentLoaded', function() {
+            const rays = document.querySelectorAll('.ray-line');
+            
+            // Start animation after main circle appears
+            setTimeout(() => {
+                rays.forEach((ray, index) => {
+                    // Stagger the ray animations
+                    setTimeout(() => {
+                        // Continuous pulsing animation
+                        ray.style.animation = `rayGlow 3s ease-in-out infinite ${index * 0.2}s`;
+                    }, index * 100);
+                });
+                
+                // Create a repeating cycle where rays appear and disappear
+                setInterval(() => {
+                    rays.forEach((ray, index) => {
+                        setTimeout(() => {
+                            ray.style.animation = 'none';
+                            void ray.offsetHeight; // Trigger reflow
+                            ray.style.animation = `rayGlow 3s ease-in-out 1`;
+                        }, index * 150);
+                    });
+                }, 6000);
+            }, 1200); // Wait for main circle to appear
+        });
+
+        // Keep all your existing JavaScript code here
         const API_URL = '/api/generate';
         
         const prompts = [
@@ -962,11 +923,6 @@
                 promptItem.onclick = () => selectPrompt(prompt, promptItem);
                 promptList.appendChild(promptItem);
             });
-
-            // Initialize constellation animations
-            initializeConnectionLines();
-            initializeStardust();
-            initializeBackgroundCanvas();
         }
 
         function selectPrompt(prompt, element) {
@@ -981,608 +937,8 @@
             document.getElementById('generateBtn').disabled = false;
         }
 
-        function createMessageThread(userPrompt) {
-            return `
-                <div class="message-thread">
-                    <div class="message-user">
-                        <div class="message-user-content">
-                            Design ${userPrompt}
-                        </div>
-                    </div>
-                    <div class="message-ai" id="aiMessage">
-                        <!-- AI response will be populated here -->
-                    </div>
-                </div>
-            `;
-        }
-
-        function formatSLMOutputs(type, icon, outputs) {
-            let outputsHtml = outputs.map((output, idx) => {
-                let description = output;
-                let inspiration = '';
-                let source = '';
-                
-                if (output.includes('||')) {
-                    const parts = output.split('||').map(p => p.trim());
-                    description = parts[0];
-                    if (parts[1]) inspiration = parts[1];
-                    if (parts[2]) source = parts[2].replace('Source:', '').trim();
-                }
-                
-                return `
-                    <div class="output-item ${type}" style="animation-delay: ${idx * 0.1}s">
-                        <div class="output-description">• ${description}</div>
-                        ${inspiration ? `
-                            <div class="output-inspiration">
-                                "${inspiration}"
-                                ${source ? `<div class="output-source">— ${source}</div>` : ''}
-                            </div>
-                        ` : ''}
-                    </div>
-                `;
-            }).join('');
-            
-            return outputsHtml;
-        }
-
-        function formatFeatures(features) {
-            return features.map((feature, idx) => `
-                <div class="feature-card" style="animation-delay: ${idx * 0.1}s">
-                    <div class="feature-number">${idx + 1}</div>
-                    <div class="feature-description">${feature.description}</div>
-                    <div class="feature-inspiration">
-                        "${feature.inspiration}"
-                    </div>
-                    <div class="feature-metadata">
-                        <div class="development-stage stage-${feature.stage.toLowerCase().replace('_', '-')}">
-                            ${feature.stage.replace('_', ' ')}
-                        </div>
-                        <div class="engineering-notes">${feature.notes}</div>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function formatProduct(data) {
-            const featuresList = data.features.map(feat => {
-                const inspirationOnly = feat.inspiration.split('||')[0].trim();
-                return `
-                    <li class="highlight-item">
-                        <div class="highlight-text">
-                            <span class="highlight-feature">${feat.description}</span> - 
-                            Inspired by "${inspirationOnly}", this feature is currently at 
-                            ${feat.stage.toLowerCase().replace('_', ' ')} stage. ${feat.notes}.
-                        </div>
-                    </li>
-                `;
-            }).join('');
-
-            return `
-                <div class="product-section">
-                    <div class="product-header">
-                        <div class="product-name">${data.name}</div>
-                        <div class="product-market">Target Market: ${data.target_market}</div>
-                    </div>
-                    
-                    <div class="scores-container">
-                        <div class="score-item">
-                            <div class="score-label">Innovation Score</div>
-                            <div class="score-value">${data.innovation_score}/10</div>
-                            <div class="score-bar">
-                                <div class="score-fill" style="width: ${data.innovation_score * 10}%"></div>
-                            </div>
-                        </div>
-                        <div class="score-item">
-                            <div class="score-label">Feasibility Score</div>
-                            <div class="score-value">${data.feasibility_score}/10</div>
-                            <div class="score-bar">
-                                <div class="score-fill" style="width: ${data.feasibility_score * 10}%"></div>
-                            </div>
-                        </div>
-                        <div class="score-item">
-                            <div class="score-label">Market Viability</div>
-                            <div class="score-value">${(data.viability_score * 100).toFixed(0)}%</div>
-                            <div class="score-bar">
-                                <div class="score-fill" style="width: ${data.viability_score * 100}%"></div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="product-description">
-                        <h3>Final Product Design</h3>
-                        
-                        <div class="product-highlights">
-                            <h4>${data.name} - Revolutionary ${data.product_type}</h4>
-                            <ul class="highlight-list">
-                                ${featuresList}
-                            </ul>
-                        </div>
-                        
-                        <div class="product-summary">
-                            <p class="summary-text">
-                                The ${data.name} represents a paradigm shift in ${data.product_type} design, 
-                                seamlessly integrating mechanical precision, biological inspiration, and aesthetic elegance. 
-                                With an innovation score of ${data.innovation_score}/10 and feasibility rating of 
-                                ${data.feasibility_score}/10, this design achieves a remarkable ${(data.viability_score * 100).toFixed(0)}% 
-                                market viability, embodying the Renaissance ideal of perfect harmony between form and function.
-                            </p>
-                        </div>
-                    </div>
-                    
-                    <div class="principles-list">
-                        <div class="principle-tag">⚙ Mechanics & Physics</div>
-                        <div class="principle-tag">🦋 Anatomy & Biology</div>
-                        <div class="principle-tag">👁 Optics & Aesthetics</div>
-                    </div>
-                </div>
-            `;
-        }
-
-        function startNewChat() {
-            window.location.reload();
-        }
-
-        async function generateDesign() {
-            if (!selectedPrompt || isGenerating) return;
-            
-            isGenerating = true;
-            const generateBtn = document.getElementById('generateBtn');
-            generateBtn.disabled = true;
-            
-            const chatContainer = document.getElementById('chatContainer');
-            const welcomeState = document.getElementById('welcomeState');
-            if (welcomeState) welcomeState.remove();
-            
-            document.getElementById('newChatBtn').classList.add('visible');
-            
-            chatContainer.innerHTML = createMessageThread(selectedPrompt);
-            const aiMessage = document.getElementById('aiMessage');
-            
-            let responseHTML = `
-                <div class="ai-section" style="animation-delay: 0s">
-                    <div class="step-title">
-                        Initializing Da Vinci Knowledge Synthesis
-                        <span class="step-status" id="initStatus">Processing</span>
-                    </div>
-                </div>
-                
-                <div class="process-step" id="mechanicsStep">
-                    <div class="step-indicator mechanics" id="mechanicsIndicator">⚙</div>
-                    <div class="step-content">
-                        <div class="step-title">
-                            Mechanics & Physics SLM
-                            <span class="step-status" id="mechanicsStatus" style="display: none">Processing</span>
-                        </div>
-                        <div class="step-outputs" id="mechanicsOutputs"></div>
-                    </div>
-                </div>
-                
-                <div class="process-step" id="anatomyStep">
-                    <div class="step-indicator anatomy" id="anatomyIndicator">🦋</div>
-                    <div class="step-content">
-                        <div class="step-title">
-                            Anatomy & Biology SLM
-                            <span class="step-status" id="anatomyStatus" style="display: none">Processing</span>
-                        </div>
-                        <div class="step-outputs" id="anatomyOutputs"></div>
-                    </div>
-                </div>
-                
-                <div class="process-step" id="opticsStep">
-                    <div class="step-indicator optics" id="opticsIndicator">👁</div>
-                    <div class="step-content">
-                        <div class="step-title">
-                            Optics & Aesthetics SLM
-                            <span class="step-status" id="opticsStatus" style="display: none">Processing</span>
-                        </div>
-                        <div class="step-outputs" id="opticsOutputs"></div>
-                    </div>
-                </div>
-                
-                <div id="synthesisSection"></div>
-                <div id="featuresSection"></div>
-                <div id="productSection"></div>
-            `;
-            
-            aiMessage.innerHTML = responseHTML;
-            
-            try {
-                await new Promise(resolve => setTimeout(resolve, 1000));
-                document.getElementById('initStatus').textContent = 'Complete';
-                document.getElementById('initStatus').classList.add('complete');
-                
-                const response = await fetch(API_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ prompt: selectedPrompt })
-                }).catch(() => null);
-                
-                const data = response && response.ok ? await response.json() : getMockData();
-                
-                await processSLM('mechanics', '⚙', data.slm_outputs.mechanics);
-                await processSLM('anatomy', '🦋', data.slm_outputs.anatomy);
-                await processSLM('optics', '👁', data.slm_outputs.optics);
-                
-                await new Promise(resolve => setTimeout(resolve, 500));
-                document.getElementById('synthesisSection').innerHTML = `
-                    <div class="synthesis-container" id="synthesisContainer">
-                        <div class="synthesis-header">
-                            <div class="synthesis-title">Da Vinci Abstraction Organ</div>
-                            <div class="synthesis-subtitle">Synthesizing knowledge domains...</div>
-                        </div>
-                        <div class="synthesis-visual" id="synthesisVisual">
-                            <div class="knowledge-node mechanics" id="nodeMechanics">
-                                <div class="node-icon">⚙</div>
-                                <div class="node-label">Mechanics</div>
-                            </div>
-                            <div class="knowledge-node anatomy" id="nodeAnatomy">
-                                <div class="node-icon">🦋</div>
-                                <div class="node-label">Anatomy</div>
-                            </div>
-                            <div class="knowledge-node optics" id="nodeOptics">
-                                <div class="node-icon">👁</div>
-                                <div class="node-label">Optics</div>
-                            </div>
-                            <div class="synthesis-center" id="synthesisCenter">◈</div>
-                        </div>
-                    </div>
-                `;
-                
-                document.getElementById('synthesisContainer').scrollIntoView({ behavior: 'smooth', block: 'center' });
-                
-                await new Promise(resolve => setTimeout(resolve, 1500));
-                
-                const nodeMechanics = document.getElementById('nodeMechanics');
-                const nodeAnatomy = document.getElementById('nodeAnatomy');
-                const nodeOptics = document.getElementById('nodeOptics');
-                const synthesisCenter = document.getElementById('synthesisCenter');
-                
-                nodeMechanics.style.transition = 'transform 1s cubic-bezier(0.4, 0, 0.2, 1)';
-                nodeAnatomy.style.transition = 'transform 1s cubic-bezier(0.4, 0, 0.2, 1)';
-                nodeOptics.style.transition = 'transform 1s cubic-bezier(0.4, 0, 0.2, 1)';
-                
-                await new Promise(resolve => setTimeout(resolve, 200));
-                nodeMechanics.style.transform = 'translateX(60px) scale(0.95)';
-                nodeAnatomy.style.transform = 'translateX(0px) scale(0.95)';
-                nodeOptics.style.transform = 'translateX(-60px) scale(0.95)';
-                
-                await new Promise(resolve => setTimeout(resolve, 1000));
-                
-                synthesisCenter.style.animation = 'centerExpand 1s cubic-bezier(0.4, 0, 0.2, 1) forwards, pulse 0.6s ease-out 1s 3';
-                
-                await new Promise(resolve => setTimeout(resolve, 2000));
-                
-                const synthesisVisual = document.getElementById('synthesisVisual');
-                synthesisVisual.style.transition = 'transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.8s ease-out';
-                synthesisVisual.style.transform = 'scale(0.8) translateY(-20px)';
-                synthesisVisual.style.opacity = '0.7';
-                
-                document.getElementById('featuresSection').innerHTML = `
-                    <div class="features-section" id="featuresDiv" style="opacity: 0; transform: translateY(30px);">
-                        <div class="features-header">Synthesized Design Features</div>
-                        <div class="features-grid">
-                            ${formatFeatures(data.features)}
-                        </div>
-                    </div>
-                `;
-                
-                await new Promise(resolve => setTimeout(resolve, 500));
-                
-                const featuresDiv = document.getElementById('featuresDiv');
-                featuresDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                
-                featuresDiv.style.transition = 'opacity 1s ease-out, transform 1s cubic-bezier(0.4, 0, 0.2, 1)';
-                await new Promise(resolve => setTimeout(resolve, 100));
-                featuresDiv.style.opacity = '1';
-                featuresDiv.style.transform = 'translateY(0)';
-                
-                await new Promise(resolve => setTimeout(resolve, 2000));
-                
-                document.getElementById('productSection').innerHTML = formatProduct(data);
-                document.getElementById('productSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
-                
-            } catch (error) {
-                console.error('Error:', error);
-            } finally {
-                isGenerating = false;
-                generateBtn.disabled = false;
-            }
-        }
-
-        async function processSLM(type, icon, outputs) {
-            const indicator = document.getElementById(`${type}Indicator`);
-            const status = document.getElementById(`${type}Status`);
-            const outputsContainer = document.getElementById(`${type}Outputs`);
-            
-            indicator.classList.add('active');
-            status.style.display = 'inline-block';
-            
-            const step = document.getElementById(`${type}Step`);
-            if (step) {
-                step.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }
-            
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            
-            outputsContainer.innerHTML = formatSLMOutputs(type, icon, outputs);
-            
-            await new Promise(resolve => setTimeout(resolve, 500));
-            
-            indicator.classList.remove('active');
-            indicator.classList.add('complete');
-            status.textContent = 'Complete';
-            status.classList.add('complete');
-        }
-
-        function getMockData() {
-            return {
-                name: `Vitruvian ${['Harmony', 'Flow', 'Aero', 'Sfumato'][Math.floor(Math.random() * 4)]} ${selectedPrompt.split(' ').slice(-1)[0]}`,
-                product_type: selectedPrompt,
-                target_market: ['Consumer Electronics', 'Industrial Equipment', 'Medical Devices', 'Sustainable Goods'][Math.floor(Math.random() * 4)],
-                innovation_score: Math.floor(Math.random() * 3) + 7,
-                feasibility_score: Math.floor(Math.random() * 3) + 7,
-                viability_score: (Math.random() * 0.3 + 0.7).toFixed(2),
-                features: [
-                    {
-                        description: "Apply pyramidal law of force to enhance mechanical efficiency and durability",
-                        inspiration: "Pyramidal law of force: power diminishes towards its end",
-                        stage: "PROTOTYPE",
-                        notes: "Prototype feasible with current technology"
-                    },
-                    {
-                        description: "Incorporate proportional harmony based on the Vitruvian system for ergonomic design",
-                        inspiration: "Proportional harmony based on the Vitruvian system",
-                        stage: "PRODUCTION_READY",
-                        notes: "Production-ready using established processes"
-                    },
-                    {
-                        description: "Integrate sfumato technique for visual harmony and perceptual depth",
-                        inspiration: "Sfumato: do not make definite boundaries",
-                        stage: "CONCEPT",
-                        notes: "Conceptual exploration requires validation"
-                    }
-                ],
-                slm_outputs: {
-                    mechanics: [
-                        "Apply pyramidal law of force to enhance mechanical efficiency || Pyramidal law of force: power diminishes towards its end || Source: Madrid I, 16r",
-                        "Use water flow principles for efficient energy distribution || Water seeks the most efficient path || Source: Codex Leicester"
-                    ],
-                    anatomy: [
-                        "Incorporate Vitruvian proportions for optimal ergonomics || Proportional harmony based on the Vitruvian system || Source: Venice Accademia",
-                        "Apply layered system integration mimicking biological structures || Layered system integration || Source: Anatomical drawings"
-                    ],
-                    optics: [
-                        "Integrate sfumato gradients for perceptual depth || Sfumato: do not make definite boundaries || Source: Ash.II, 14v",
-                        "Apply golden ratio for aesthetic harmony || Golden ratio in natural designs || Source: Divine Proportion"
-                    ]
-                }
-            };
-        }
-
-        document.getElementById('generateBtn').addEventListener('click', generateDesign);
-
-        // Initialize connection lines between all circles
-        function initializeConnectionLines() {
-            const svg = document.getElementById('connectionLines');
-            
-            setTimeout(() => {
-                const mainPlanet = document.getElementById('mainPlanet');
-                const planets = [];
-                
-                for (let i = 1; i <= 7; i++) {
-                    const planet = document.getElementById(`planet${i}`);
-                    if (planet) {
-                        const rect = planet.getBoundingClientRect();
-                        const containerRect = svg.getBoundingClientRect();
-                        planets.push({
-                            id: i,
-                            x: rect.left - containerRect.left + rect.width / 2,
-                            y: rect.top - containerRect.top + rect.height / 2
-                        });
-                    }
-                }
-                
-                const mainRect = mainPlanet.getBoundingClientRect();
-                const containerRect = svg.getBoundingClientRect();
-                const mainPos = {
-                    x: mainRect.left - containerRect.left + mainRect.width / 2,
-                    y: mainRect.top - containerRect.top + mainRect.height / 2
-                };
-                
-                for (let i = 0; i < 3; i++) {
-                    if (planets[i]) {
-                        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-                        line.setAttribute('x1', mainPos.x);
-                        line.setAttribute('y1', mainPos.y);
-                        line.setAttribute('x2', planets[i].x);
-                        line.setAttribute('y2', planets[i].y);
-                        line.setAttribute('class', 'connection-line primary');
-                        line.style.animationDelay = `${0.8 + i * 0.1}s`;
-                        svg.appendChild(line);
-                    }
-                }
-                
-                for (let i = 3; i < 7; i++) {
-                    if (planets[i]) {
-                        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-                        line.setAttribute('x1', mainPos.x);
-                        line.setAttribute('y1', mainPos.y);
-                        line.setAttribute('x2', planets[i].x);
-                        line.setAttribute('y2', planets[i].y);
-                        line.setAttribute('class', 'connection-line secondary');
-                        line.style.animationDelay = `${1.1 + (i - 3) * 0.1}s`;
-                        svg.appendChild(line);
-                    }
-                }
-                
-                if (planets[0] && planets[1]) {
-                    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-                    line.setAttribute('x1', planets[0].x);
-                    line.setAttribute('y1', planets[0].y);
-                    line.setAttribute('x2', planets[1].x);
-                    line.setAttribute('y2', planets[1].y);
-                    line.setAttribute('class', 'connection-line secondary');
-                    line.style.animationDelay = '1.3s';
-                    svg.appendChild(line);
-                }
-                
-                if (planets[1] && planets[2]) {
-                    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-                    line.setAttribute('x1', planets[1].x);
-                    line.setAttribute('y1', planets[1].y);
-                    line.setAttribute('x2', planets[2].x);
-                    line.setAttribute('y2', planets[2].y);
-                    line.setAttribute('class', 'connection-line secondary');
-                    line.style.animationDelay = '1.4s';
-                    svg.appendChild(line);
-                }
-                
-                for (let i = 3; i < 6; i++) {
-                    if (planets[i] && planets[i + 1]) {
-                        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-                        line.setAttribute('x1', planets[i].x);
-                        line.setAttribute('y1', planets[i].y);
-                        line.setAttribute('x2', planets[i + 1].x);
-                        line.setAttribute('y2', planets[i + 1].y);
-                        line.setAttribute('class', 'connection-line secondary');
-                        line.style.animationDelay = `${1.5 + (i - 3) * 0.1}s`;
-                        svg.appendChild(line);
-                    }
-                }
-                
-                if (planets[0] && planets[4]) {
-                    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-                    line.setAttribute('x1', planets[0].x);
-                    line.setAttribute('y1', planets[0].y);
-                    line.setAttribute('x2', planets[4].x);
-                    line.setAttribute('y2', planets[4].y);
-                    line.setAttribute('class', 'connection-line cross');
-                    line.style.animationDelay = '1.8s';
-                    svg.appendChild(line);
-                }
-                
-                if (planets[2] && planets[6]) {
-                    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-                    line.setAttribute('x1', planets[2].x);
-                    line.setAttribute('y1', planets[2].y);
-                    line.setAttribute('x2', planets[6].x);
-                    line.setAttribute('y2', planets[6].y);
-                    line.setAttribute('class', 'connection-line cross');
-                    line.style.animationDelay = '1.9s';
-                    svg.appendChild(line);
-                }
-            }, 1000);
-        }
-
-        // Create stardust effect
-        function initializeStardust() {
-            const heroContainer = document.querySelector('.hero-container');
-            
-            for (let i = 0; i < 20; i++) {
-                const star = document.createElement('div');
-                star.className = 'stardust';
-                
-                star.style.left = `${Math.random() * 100}%`;
-                star.style.top = `${Math.random() * 100}%`;
-                star.style.animationDelay = `${Math.random() * 3}s`;
-                star.style.animationDuration = `${3 + Math.random() * 2}s`;
-                
-                heroContainer.appendChild(star);
-            }
-        }
-
-        // Background canvas for subtle star field
-        function initializeBackgroundCanvas() {
-            const canvas = document.getElementById('constellationCanvas');
-            const ctx = canvas.getContext('2d');
-            
-            function resizeCanvas() {
-                canvas.width = canvas.offsetWidth;
-                canvas.height = canvas.offsetHeight;
-            }
-            
-            resizeCanvas();
-            window.addEventListener('resize', resizeCanvas);
-            
-            const stars = [];
-            const numStars = 50;
-            
-            for (let i = 0; i < numStars; i++) {
-                stars.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    radius: Math.random() * 0.8 + 0.2,
-                    opacity: Math.random() * 0.5 + 0.1,
-                    twinkleSpeed: Math.random() * 0.02 + 0.005
-                });
-            }
-            
-            function animate() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                
-                stars.forEach(star => {
-                    star.opacity += star.twinkleSpeed;
-                    if (star.opacity > 0.6 || star.opacity < 0.1) {
-                        star.twinkleSpeed = -star.twinkleSpeed;
-                    }
-                    
-                    ctx.beginPath();
-                    ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-                    ctx.fillStyle = `rgba(212, 175, 55, ${star.opacity})`;
-                    ctx.fill();
-                });
-                
-                requestAnimationFrame(animate);
-            }
-            
-            animate();
-        }
-
-        // Initialize everything when DOM is loaded
-        document.addEventListener('DOMContentLoaded', initializeUI);
-    </script>.height = canvas.offsetHeight;
-            }
-            
-            resizeCanvas();
-            window.addEventListener('resize', resizeCanvas);
-            
-            const stars = [];
-            const numStars = 50;
-            
-            // Create stars
-            for (let i = 0; i < numStars; i++) {
-                stars.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    radius: Math.random() * 0.8 + 0.2,
-                    opacity: Math.random() * 0.5 + 0.1,
-                    twinkleSpeed: Math.random() * 0.02 + 0.005
-                });
-            }
-            
-            function animate() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                
-                stars.forEach(star => {
-                    star.opacity += star.twinkleSpeed;
-                    if (star.opacity > 0.6 || star.opacity < 0.1) {
-                        star.twinkleSpeed = -star.twinkleSpeed;
-                    }
-                    
-                    ctx.beginPath();
-                    ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-                    ctx.fillStyle = `rgba(212, 175, 55, ${star.opacity})`;
-                    ctx.fill();
-                });
-                
-                requestAnimationFrame(animate);
-            }
-            
-            animate();
-        }
-
-        // Initialize everything when DOM is loaded
-        document.addEventListener('DOMContentLoaded', initializeUI);
+        // Initialize the UI
+        initializeUI();
     </script>
 </body>
 </html>
