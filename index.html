@@ -817,11 +817,15 @@
         <!-- Header -->
         <div class="header">
             <div class="logo">
-                <div class="logo-mark">DV</div>
-                <span class="logo-text">DVNC.AI</span>
+                <img src="https://static.wixstatic.com/media/33c4b5_158b573e4df145c7856f1330dbd9e49d~mv2.jpg" alt="DVNC.AI" style="height: 36px; width: auto; border-radius: 8px;">
             </div>
+            <!-- New Chat Button -->
+            <button class="new-chat-btn" id="newChatBtn" onclick="startNewChat()">
+                <span>↻</span>
+                <span>New Chat</span>
+            </button>
             <div class="partner-logo" style="display: flex; align-items: center; gap: 10px;">
-                <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #333, #666); border-radius: 50%;"></div>
+                <img src="https://static.wixstatic.com/media/33c4b5_79ea16e09e1b471dae81c5dffb012bb4~mv2.jpeg" alt="TAAMCrypto" style="height: 40px; width: 40px; border-radius: 50%; object-fit: cover;">
                 <span style="font-size: 14px; font-weight: 600; color: var(--text-secondary);">TAAMCrypto</span>
             </div>
         </div>
@@ -929,7 +933,8 @@
     </div>
 
     <script>
-        // Previous JavaScript remains the same
+        const API_URL = '/api/generate';
+        
         const prompts = [
             "a next-generation ergonomic computer mouse",
             "an innovative kitchen kettle for urban living",
@@ -944,6 +949,7 @@
         ];
 
         let selectedPrompt = '';
+        let isGenerating = false;
 
         function initializeUI() {
             const promptList = document.getElementById('promptList');
@@ -951,6 +957,7 @@
             prompts.forEach((prompt, index) => {
                 const promptItem = document.createElement('div');
                 promptItem.className = 'prompt-item';
+                promptItem.dataset.prompt = prompt;
                 promptItem.textContent = prompt;
                 promptItem.onclick = () => selectPrompt(prompt, promptItem);
                 promptList.appendChild(promptItem);
@@ -963,6 +970,8 @@
         }
 
         function selectPrompt(prompt, element) {
+            if (isGenerating) return;
+            
             document.querySelectorAll('.prompt-item').forEach(item => {
                 item.classList.remove('selected');
             });
@@ -972,16 +981,394 @@
             document.getElementById('generateBtn').disabled = false;
         }
 
+        function createMessageThread(userPrompt) {
+            return `
+                <div class="message-thread">
+                    <div class="message-user">
+                        <div class="message-user-content">
+                            Design ${userPrompt}
+                        </div>
+                    </div>
+                    <div class="message-ai" id="aiMessage">
+                        <!-- AI response will be populated here -->
+                    </div>
+                </div>
+            `;
+        }
+
+        function formatSLMOutputs(type, icon, outputs) {
+            let outputsHtml = outputs.map((output, idx) => {
+                let description = output;
+                let inspiration = '';
+                let source = '';
+                
+                if (output.includes('||')) {
+                    const parts = output.split('||').map(p => p.trim());
+                    description = parts[0];
+                    if (parts[1]) inspiration = parts[1];
+                    if (parts[2]) source = parts[2].replace('Source:', '').trim();
+                }
+                
+                return `
+                    <div class="output-item ${type}" style="animation-delay: ${idx * 0.1}s">
+                        <div class="output-description">• ${description}</div>
+                        ${inspiration ? `
+                            <div class="output-inspiration">
+                                "${inspiration}"
+                                ${source ? `<div class="output-source">— ${source}</div>` : ''}
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
+            
+            return outputsHtml;
+        }
+
+        function formatFeatures(features) {
+            return features.map((feature, idx) => `
+                <div class="feature-card" style="animation-delay: ${idx * 0.1}s">
+                    <div class="feature-number">${idx + 1}</div>
+                    <div class="feature-description">${feature.description}</div>
+                    <div class="feature-inspiration">
+                        "${feature.inspiration}"
+                    </div>
+                    <div class="feature-metadata">
+                        <div class="development-stage stage-${feature.stage.toLowerCase().replace('_', '-')}">
+                            ${feature.stage.replace('_', ' ')}
+                        </div>
+                        <div class="engineering-notes">${feature.notes}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function formatProduct(data) {
+            const featuresList = data.features.map(feat => {
+                const inspirationOnly = feat.inspiration.split('||')[0].trim();
+                return `
+                    <li class="highlight-item">
+                        <div class="highlight-text">
+                            <span class="highlight-feature">${feat.description}</span> - 
+                            Inspired by "${inspirationOnly}", this feature is currently at 
+                            ${feat.stage.toLowerCase().replace('_', ' ')} stage. ${feat.notes}.
+                        </div>
+                    </li>
+                `;
+            }).join('');
+
+            return `
+                <div class="product-section">
+                    <div class="product-header">
+                        <div class="product-name">${data.name}</div>
+                        <div class="product-market">Target Market: ${data.target_market}</div>
+                    </div>
+                    
+                    <div class="scores-container">
+                        <div class="score-item">
+                            <div class="score-label">Innovation Score</div>
+                            <div class="score-value">${data.innovation_score}/10</div>
+                            <div class="score-bar">
+                                <div class="score-fill" style="width: ${data.innovation_score * 10}%"></div>
+                            </div>
+                        </div>
+                        <div class="score-item">
+                            <div class="score-label">Feasibility Score</div>
+                            <div class="score-value">${data.feasibility_score}/10</div>
+                            <div class="score-bar">
+                                <div class="score-fill" style="width: ${data.feasibility_score * 10}%"></div>
+                            </div>
+                        </div>
+                        <div class="score-item">
+                            <div class="score-label">Market Viability</div>
+                            <div class="score-value">${(data.viability_score * 100).toFixed(0)}%</div>
+                            <div class="score-bar">
+                                <div class="score-fill" style="width: ${data.viability_score * 100}%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="product-description">
+                        <h3>Final Product Design</h3>
+                        
+                        <div class="product-highlights">
+                            <h4>${data.name} - Revolutionary ${data.product_type}</h4>
+                            <ul class="highlight-list">
+                                ${featuresList}
+                            </ul>
+                        </div>
+                        
+                        <div class="product-summary">
+                            <p class="summary-text">
+                                The ${data.name} represents a paradigm shift in ${data.product_type} design, 
+                                seamlessly integrating mechanical precision, biological inspiration, and aesthetic elegance. 
+                                With an innovation score of ${data.innovation_score}/10 and feasibility rating of 
+                                ${data.feasibility_score}/10, this design achieves a remarkable ${(data.viability_score * 100).toFixed(0)}% 
+                                market viability, embodying the Renaissance ideal of perfect harmony between form and function.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="principles-list">
+                        <div class="principle-tag">⚙ Mechanics & Physics</div>
+                        <div class="principle-tag">🦋 Anatomy & Biology</div>
+                        <div class="principle-tag">👁 Optics & Aesthetics</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function startNewChat() {
+            window.location.reload();
+        }
+
+        async function generateDesign() {
+            if (!selectedPrompt || isGenerating) return;
+            
+            isGenerating = true;
+            const generateBtn = document.getElementById('generateBtn');
+            generateBtn.disabled = true;
+            
+            const chatContainer = document.getElementById('chatContainer');
+            const welcomeState = document.getElementById('welcomeState');
+            if (welcomeState) welcomeState.remove();
+            
+            document.getElementById('newChatBtn').classList.add('visible');
+            
+            chatContainer.innerHTML = createMessageThread(selectedPrompt);
+            const aiMessage = document.getElementById('aiMessage');
+            
+            let responseHTML = `
+                <div class="ai-section" style="animation-delay: 0s">
+                    <div class="step-title">
+                        Initializing Da Vinci Knowledge Synthesis
+                        <span class="step-status" id="initStatus">Processing</span>
+                    </div>
+                </div>
+                
+                <div class="process-step" id="mechanicsStep">
+                    <div class="step-indicator mechanics" id="mechanicsIndicator">⚙</div>
+                    <div class="step-content">
+                        <div class="step-title">
+                            Mechanics & Physics SLM
+                            <span class="step-status" id="mechanicsStatus" style="display: none">Processing</span>
+                        </div>
+                        <div class="step-outputs" id="mechanicsOutputs"></div>
+                    </div>
+                </div>
+                
+                <div class="process-step" id="anatomyStep">
+                    <div class="step-indicator anatomy" id="anatomyIndicator">🦋</div>
+                    <div class="step-content">
+                        <div class="step-title">
+                            Anatomy & Biology SLM
+                            <span class="step-status" id="anatomyStatus" style="display: none">Processing</span>
+                        </div>
+                        <div class="step-outputs" id="anatomyOutputs"></div>
+                    </div>
+                </div>
+                
+                <div class="process-step" id="opticsStep">
+                    <div class="step-indicator optics" id="opticsIndicator">👁</div>
+                    <div class="step-content">
+                        <div class="step-title">
+                            Optics & Aesthetics SLM
+                            <span class="step-status" id="opticsStatus" style="display: none">Processing</span>
+                        </div>
+                        <div class="step-outputs" id="opticsOutputs"></div>
+                    </div>
+                </div>
+                
+                <div id="synthesisSection"></div>
+                <div id="featuresSection"></div>
+                <div id="productSection"></div>
+            `;
+            
+            aiMessage.innerHTML = responseHTML;
+            
+            try {
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                document.getElementById('initStatus').textContent = 'Complete';
+                document.getElementById('initStatus').classList.add('complete');
+                
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prompt: selectedPrompt })
+                }).catch(() => null);
+                
+                const data = response && response.ok ? await response.json() : getMockData();
+                
+                await processSLM('mechanics', '⚙', data.slm_outputs.mechanics);
+                await processSLM('anatomy', '🦋', data.slm_outputs.anatomy);
+                await processSLM('optics', '👁', data.slm_outputs.optics);
+                
+                await new Promise(resolve => setTimeout(resolve, 500));
+                document.getElementById('synthesisSection').innerHTML = `
+                    <div class="synthesis-container" id="synthesisContainer">
+                        <div class="synthesis-header">
+                            <div class="synthesis-title">Da Vinci Abstraction Organ</div>
+                            <div class="synthesis-subtitle">Synthesizing knowledge domains...</div>
+                        </div>
+                        <div class="synthesis-visual" id="synthesisVisual">
+                            <div class="knowledge-node mechanics" id="nodeMechanics">
+                                <div class="node-icon">⚙</div>
+                                <div class="node-label">Mechanics</div>
+                            </div>
+                            <div class="knowledge-node anatomy" id="nodeAnatomy">
+                                <div class="node-icon">🦋</div>
+                                <div class="node-label">Anatomy</div>
+                            </div>
+                            <div class="knowledge-node optics" id="nodeOptics">
+                                <div class="node-icon">👁</div>
+                                <div class="node-label">Optics</div>
+                            </div>
+                            <div class="synthesis-center" id="synthesisCenter">◈</div>
+                        </div>
+                    </div>
+                `;
+                
+                document.getElementById('synthesisContainer').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                
+                const nodeMechanics = document.getElementById('nodeMechanics');
+                const nodeAnatomy = document.getElementById('nodeAnatomy');
+                const nodeOptics = document.getElementById('nodeOptics');
+                const synthesisCenter = document.getElementById('synthesisCenter');
+                
+                nodeMechanics.style.transition = 'transform 1s cubic-bezier(0.4, 0, 0.2, 1)';
+                nodeAnatomy.style.transition = 'transform 1s cubic-bezier(0.4, 0, 0.2, 1)';
+                nodeOptics.style.transition = 'transform 1s cubic-bezier(0.4, 0, 0.2, 1)';
+                
+                await new Promise(resolve => setTimeout(resolve, 200));
+                nodeMechanics.style.transform = 'translateX(60px) scale(0.95)';
+                nodeAnatomy.style.transform = 'translateX(0px) scale(0.95)';
+                nodeOptics.style.transform = 'translateX(-60px) scale(0.95)';
+                
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                synthesisCenter.style.animation = 'centerExpand 1s cubic-bezier(0.4, 0, 0.2, 1) forwards, pulse 0.6s ease-out 1s 3';
+                
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                const synthesisVisual = document.getElementById('synthesisVisual');
+                synthesisVisual.style.transition = 'transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.8s ease-out';
+                synthesisVisual.style.transform = 'scale(0.8) translateY(-20px)';
+                synthesisVisual.style.opacity = '0.7';
+                
+                document.getElementById('featuresSection').innerHTML = `
+                    <div class="features-section" id="featuresDiv" style="opacity: 0; transform: translateY(30px);">
+                        <div class="features-header">Synthesized Design Features</div>
+                        <div class="features-grid">
+                            ${formatFeatures(data.features)}
+                        </div>
+                    </div>
+                `;
+                
+                await new Promise(resolve => setTimeout(resolve, 500));
+                
+                const featuresDiv = document.getElementById('featuresDiv');
+                featuresDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                
+                featuresDiv.style.transition = 'opacity 1s ease-out, transform 1s cubic-bezier(0.4, 0, 0.2, 1)';
+                await new Promise(resolve => setTimeout(resolve, 100));
+                featuresDiv.style.opacity = '1';
+                featuresDiv.style.transform = 'translateY(0)';
+                
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                document.getElementById('productSection').innerHTML = formatProduct(data);
+                document.getElementById('productSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                
+            } catch (error) {
+                console.error('Error:', error);
+            } finally {
+                isGenerating = false;
+                generateBtn.disabled = false;
+            }
+        }
+
+        async function processSLM(type, icon, outputs) {
+            const indicator = document.getElementById(`${type}Indicator`);
+            const status = document.getElementById(`${type}Status`);
+            const outputsContainer = document.getElementById(`${type}Outputs`);
+            
+            indicator.classList.add('active');
+            status.style.display = 'inline-block';
+            
+            const step = document.getElementById(`${type}Step`);
+            if (step) {
+                step.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            outputsContainer.innerHTML = formatSLMOutputs(type, icon, outputs);
+            
+            await new Promise(resolve => setTimeout(resolve, 500));
+            
+            indicator.classList.remove('active');
+            indicator.classList.add('complete');
+            status.textContent = 'Complete';
+            status.classList.add('complete');
+        }
+
+        function getMockData() {
+            return {
+                name: `Vitruvian ${['Harmony', 'Flow', 'Aero', 'Sfumato'][Math.floor(Math.random() * 4)]} ${selectedPrompt.split(' ').slice(-1)[0]}`,
+                product_type: selectedPrompt,
+                target_market: ['Consumer Electronics', 'Industrial Equipment', 'Medical Devices', 'Sustainable Goods'][Math.floor(Math.random() * 4)],
+                innovation_score: Math.floor(Math.random() * 3) + 7,
+                feasibility_score: Math.floor(Math.random() * 3) + 7,
+                viability_score: (Math.random() * 0.3 + 0.7).toFixed(2),
+                features: [
+                    {
+                        description: "Apply pyramidal law of force to enhance mechanical efficiency and durability",
+                        inspiration: "Pyramidal law of force: power diminishes towards its end",
+                        stage: "PROTOTYPE",
+                        notes: "Prototype feasible with current technology"
+                    },
+                    {
+                        description: "Incorporate proportional harmony based on the Vitruvian system for ergonomic design",
+                        inspiration: "Proportional harmony based on the Vitruvian system",
+                        stage: "PRODUCTION_READY",
+                        notes: "Production-ready using established processes"
+                    },
+                    {
+                        description: "Integrate sfumato technique for visual harmony and perceptual depth",
+                        inspiration: "Sfumato: do not make definite boundaries",
+                        stage: "CONCEPT",
+                        notes: "Conceptual exploration requires validation"
+                    }
+                ],
+                slm_outputs: {
+                    mechanics: [
+                        "Apply pyramidal law of force to enhance mechanical efficiency || Pyramidal law of force: power diminishes towards its end || Source: Madrid I, 16r",
+                        "Use water flow principles for efficient energy distribution || Water seeks the most efficient path || Source: Codex Leicester"
+                    ],
+                    anatomy: [
+                        "Incorporate Vitruvian proportions for optimal ergonomics || Proportional harmony based on the Vitruvian system || Source: Venice Accademia",
+                        "Apply layered system integration mimicking biological structures || Layered system integration || Source: Anatomical drawings"
+                    ],
+                    optics: [
+                        "Integrate sfumato gradients for perceptual depth || Sfumato: do not make definite boundaries || Source: Ash.II, 14v",
+                        "Apply golden ratio for aesthetic harmony || Golden ratio in natural designs || Source: Divine Proportion"
+                    ]
+                }
+            };
+        }
+
+        document.getElementById('generateBtn').addEventListener('click', generateDesign);
+
         // Initialize connection lines between all circles
         function initializeConnectionLines() {
             const svg = document.getElementById('connectionLines');
             
-            // Wait for elements to be positioned
             setTimeout(() => {
                 const mainPlanet = document.getElementById('mainPlanet');
                 const planets = [];
                 
-                // Get all planet positions
                 for (let i = 1; i <= 7; i++) {
                     const planet = document.getElementById(`planet${i}`);
                     if (planet) {
@@ -995,7 +1382,6 @@
                     }
                 }
                 
-                // Get main planet position
                 const mainRect = mainPlanet.getBoundingClientRect();
                 const containerRect = svg.getBoundingClientRect();
                 const mainPos = {
@@ -1003,7 +1389,6 @@
                     y: mainRect.top - containerRect.top + mainRect.height / 2
                 };
                 
-                // Connect main planet to top row (1, 2, 3)
                 for (let i = 0; i < 3; i++) {
                     if (planets[i]) {
                         const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
@@ -1017,7 +1402,6 @@
                     }
                 }
                 
-                // Connect main planet to bottom row (4, 5, 6, 7)
                 for (let i = 3; i < 7; i++) {
                     if (planets[i]) {
                         const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
@@ -1031,7 +1415,6 @@
                     }
                 }
                 
-                // Connect top row planets to each other
                 if (planets[0] && planets[1]) {
                     const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
                     line.setAttribute('x1', planets[0].x);
@@ -1054,7 +1437,6 @@
                     svg.appendChild(line);
                 }
                 
-                // Connect bottom row planets in sequence
                 for (let i = 3; i < 6; i++) {
                     if (planets[i] && planets[i + 1]) {
                         const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
@@ -1068,7 +1450,6 @@
                     }
                 }
                 
-                // Add some cross connections for complexity
                 if (planets[0] && planets[4]) {
                     const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
                     line.setAttribute('x1', planets[0].x);
@@ -1090,7 +1471,7 @@
                     line.style.animationDelay = '1.9s';
                     svg.appendChild(line);
                 }
-            }, 1000); // Wait for animations to position elements
+            }, 1000);
         }
 
         // Create stardust effect
@@ -1118,6 +1499,48 @@
             function resizeCanvas() {
                 canvas.width = canvas.offsetWidth;
                 canvas.height = canvas.offsetHeight;
+            }
+            
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+            
+            const stars = [];
+            const numStars = 50;
+            
+            for (let i = 0; i < numStars; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    radius: Math.random() * 0.8 + 0.2,
+                    opacity: Math.random() * 0.5 + 0.1,
+                    twinkleSpeed: Math.random() * 0.02 + 0.005
+                });
+            }
+            
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                stars.forEach(star => {
+                    star.opacity += star.twinkleSpeed;
+                    if (star.opacity > 0.6 || star.opacity < 0.1) {
+                        star.twinkleSpeed = -star.twinkleSpeed;
+                    }
+                    
+                    ctx.beginPath();
+                    ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(212, 175, 55, ${star.opacity})`;
+                    ctx.fill();
+                });
+                
+                requestAnimationFrame(animate);
+            }
+            
+            animate();
+        }
+
+        // Initialize everything when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initializeUI);
+    </script>.height = canvas.offsetHeight;
             }
             
             resizeCanvas();
